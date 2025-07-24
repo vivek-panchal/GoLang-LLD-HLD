@@ -232,4 +232,72 @@ func main() {
 		fmt.Println("Key:", key, ", Value:", value)
 	}
 
+	//***********************************Functions in go***************************************
+	// Functions are reusable blocks of code that can be called with specific parameters to perform a task
+	// Functions can return values and can be defined with parameters to accept input values.
+	// Call the function to print "Hello, World!"
+	printHello()
+
+	// Call the function to add two numbers and print the result
+	result := add(5, 10) // Call the add function with parameters 5 and 10
+	fmt.Println("Sum of 5 and 10 is:", result) // Print the result of the addition
+
+	// calling function with multiple return values
+	sum, product := addMultiple(5, 10) // Call the addMultiple function with parameters 5 and 10
+	fmt.Println("Sum of 5 and 10 is:", sum) // Print the sum returned
+	fmt.Println("Product of 5 and 10 is:", product) // Print the product returned
+
+	// Call the applyFunction function with the add function and parameters 5 and 10
+	applyResult := applyFunction(add, 5, 10) // Call the applyFunction function with the add function and parameters 5 and 10
+	fmt.Println("Result of applying add function:", applyResult) // Print the result of applying the
+
+	// Variadic functions :- We can pass a variable number of parameters to a function using the variadic syntax.
+	// The variadic function can accept zero or more parameters of a specified type.
+	sumVariadic := sumVariadic(1, 2, 3, 4, 5, 6, 7, 8) // Call the sumVariadic function with multiple parameters
+	fmt.Println("Sum of variadic parameters:", sumVariadic) // Print the result of the sumVariadic function
+
+	//**********************************Closures in go***************************************
+	// Closures are functions that capture variables from their surrounding context. They can be used to create functions with specific behavior based on the captured variables.
+	// A closure is a function that captures variables from its surrounding context.
+	incrementer := makeIncrementer() // Create a closure using the makeIncrementer function
+	fmt.Println("Incrementer with 5:", incrementer(5)) // Call the closure with the parameter 5
+	fmt.Println("Incrementer with 10:", incrementer(10)) // Call the closure with the parameter 10
+}
+
+// Function without parameters and return value
+func printHello() {
+	fmt.Println("Hello, World!")
+}
+
+// Function with parameters and return value
+func add(a int, b int) int {
+	return a + b // Return the sum of a and b
+}
+
+// Function with multiple return values
+func addMultiple(a int, b int) (int, int) {
+	return a + b, a * b // Return the sum and product of a and b
+}
+
+// Funtion takes a function as an argument and returns a function
+func applyFunction(fn func(int, int) int, a int, b int) int {
+	return fn(a, b) // Call the function fn with parameters a and b and return the result
+}
+
+// Variadic function that takes a variable number of parameters
+func sumVariadic(nums ...int) int {		
+	sum := 0 // Initialize a variable to store the sum
+	for _, num := range nums { // Iterate over the variadic parameters
+		sum += num // Add each number to the sum
+	}
+	return sum // Return the total sum
+}
+
+// Closure example
+func makeIncrementer() func(int) int {
+	count := 2
+	return func(x int) int {
+		count += x
+		return count
+	}
 }
