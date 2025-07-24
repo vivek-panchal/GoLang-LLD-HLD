@@ -224,5 +224,12 @@ func main() {
 	fmt.Println("Map after clearing:", uninitializedMap) // Print the map after clearing it
 
 	//**********************************Range in go***************************************
+	// The range keyword is used to iterate over elements in a collection, such as arrays, slices, maps, and strings.
+	// It can be used in for loops to access both the index and value of each element
+	var numbersMap = map[string]int{"one": 1, "two": 2, "three": 3} // Declare and initialize a map with string keys and integer values
+	fmt.Println("Numbers Map:", numbersMap) // Print the entire map
+	for key, value := range numbersMap {
+		fmt.Println("Key:", key, ", Value:", value)
+	}
 
 }
