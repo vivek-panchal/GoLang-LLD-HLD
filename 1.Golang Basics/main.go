@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"sync"
 )
 
 func main() {
@@ -279,8 +280,6 @@ func main() {
 	// Structs are composite data types that allow you to group related data together. They can be used to define custom data structures with fields of different types.
 	
 
-	
-
 	// Create an instance of the Order struct using the newOrder function
 	order1 := newOrder(1, "Laptop", 2, 150000.00) // Call the newOrder function to create a new order
 	fmt.Println("Order 1:", order1) // Print the details of the first order
@@ -324,11 +323,71 @@ func main() {
 	fmt.Println("myOrder Total:", myOrder.Total) // Print the total price (Quantity * Price)
 	fmt.Println("myOrder Created At:", myOrder.createdAt.Format(time.RFC3339)) // Print the creation time of the order in RFC3339 format
 
+
+
+	// *********************************Interfaces in go***************************************
+	// Interfaces are abstract types that define a set of methods that a type must implement. They allow you to define behavior without specifying the concrete implementation.
+	// Interfaces are used to define a contract that types must adhere to. They allow for polymorphism and can be used to create flexible and reusable code.
+	// An interface is a type that defines a set of methods that a type must implement.
+	type Shape interface { // Define an interface named Shape
+		Area() float64 // Method to calculate the area of the shape
+		Perimeter() float64 // Method to calculate the perimeter of the shape
+	}
+
+	// Create an instance of the Rectangle type
+	rect := Rectangle{ // Create a new instance of the Rectangle type
+		Width:  10,
+		Height: 5,
+	}
+	// Print the area and perimeter of the rectangle
+	fmt.Println("Rectangle Area:", rect.Area()) // Call the Area method of the Rectangle type
+	fmt.Println("Rectangle Perimeter:", rect.Perimeter()) // Call the Perimeter method of the Rectangle type
+
+	//***********************************Enums in go***************************************
+
+	// Enums are a way to define a set of named constants. They can be used to represent a fixed set of values, such as days of the week, months of the year, etc.
+
+	// ***********************************generics in go***************************************
+	// Generics allow you to write functions and types that can work with any data type. They provide a way to create reusable code that can operate on different types without sacrificing type safety.
+
+	// Comparable types can be used with generics to create functions that can work with any type that supports comparison operations.
+
+
+	// Call the generic function with different types
+	Print("Hello, Generics!") // Call the Print function with a string value	
+	Print(42) // Call the Print function with an integer value
+	Print(3.14) // Call the Print function with a float value
+	Print(true) // Call the Print function with a boolean value
+
+	// **********************************goroutines in go***************************************
+	// Goroutines are lightweight threads of execution that allow you to run concurrent tasks in Go.
+	// They are used to perform tasks concurrently, allowing for efficient use of system resources and improved performance.
+	fmt.Println("Starting Goroutine") // Print a message before starting the goroutine
+	goroutineExample() // Call the goroutineExample function to start a goroutine
+
+	//**********************************Wait Groups in go***************************************
+	// Wait Groups are used to wait for a collection of goroutines to finish executing.
+	// They provide a way to synchronize the completion of multiple goroutines.
+	
+	var wg sync.WaitGroup // Declare a WaitGroup variable
+	wg.Add(2) // Add two goroutines to the WaitGroup
+
+	go func() {
+		defer wg.Done() // Decrement the counter when the goroutine completes
+		printHello()
+	}()
+
+	go func() {
+		defer wg.Done() // Decrement the counter when the goroutine completes
+		printHello()
+	}()
+
+	wg.Wait() // Wait for all goroutines to complete
 }
 
-// Function without parameters and return value
+// Function to print a message
 func printHello() {
-	fmt.Println("Hello, World!")
+	fmt.Println("Hello, World!") // Print a message to the console
 }
 
 // Function with parameters and return value
@@ -366,24 +425,55 @@ func makeIncrementer() func(int) int {
 
 // Structs in Go
 type Order struct { // Define a struct named Order
-		ID     int    // Field for the order ID	
-		Product string // Field for the product name
-		Quantity int // Field for the quantity of the product
-		Price  float64 // Field for the price of the product
-		Total  float64 // Field for the total price (Quantity * Price)
-		createdAt time.Time // Field for the creation time of the order
-	}
+	ID       int    // Field for the order ID
+	Product  string // Field for the product name
+	Quantity int    // Field for the quantity of the product
+	Price    float64 // Field for the price of the product
+	Total    float64 // Field for the total price (Quantity * Price)
+	createdAt time.Time // Field for the creation time of the order
+}
 
 // Function to create a new order
 // This function takes parameters to create a new order and returns an instance of the Order struct.
 func newOrder(id int, product string, quantity int, price float64) Order {
 		
-		return Order{
-			ID:       id,
-			Product:  product,
-			Quantity: quantity,
-			Price:    price,
-			Total:    float64(quantity) * price,
-			createdAt: time.Now(),
-		}
+	return Order{
+		ID:       id,
+		Product:  product,
+		Quantity: quantity,
+		Price:    price,
+		Total:    float64(quantity) * price,
+		createdAt: time.Now(),
 	}
+}
+
+// A type can implement an interface by defining the methods specified in the interface.
+type Rectangle struct {
+	Width  float64
+	Height float64
+}
+// Implement the Area method for the Rectangle type
+func (r Rectangle) Area() float64 {
+	return r.Width * r.Height
+}
+
+// Implement the Perimeter method for the Rectangle type
+func (r Rectangle) Perimeter() float64 {
+	return 2 * (r.Width + r.Height)
+}
+
+
+// Example of a generic function
+func Print[T any](value T) {
+	fmt.Println(value)
+}
+
+// Goroutine example
+func goroutineExample() {
+	go func() { // Start a new goroutine
+		fmt.Println("This is a goroutine") // Print a message in the goroutine
+	}()
+
+	time.Sleep(1 * time.Second) // Sleep for 1 second to allow the goroutine to complete
+	fmt.Println("Goroutine finished") // Print a message after the goroutine has finished
+}
