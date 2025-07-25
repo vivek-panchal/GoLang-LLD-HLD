@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	// This is the main function where the program starts execution.
@@ -262,6 +265,65 @@ func main() {
 	incrementer := makeIncrementer() // Create a closure using the makeIncrementer function
 	fmt.Println("Incrementer with 5:", incrementer(5)) // Call the closure with the parameter 5
 	fmt.Println("Incrementer with 10:", incrementer(10)) // Call the closure with the parameter 10
+
+
+	//**********************************Pointers in go***************************************
+	// Pointers are variables that store the memory address of another variable. They allow you to manipulate the value of a variable directly.
+	var temp int = 10 // Declare an integer variable temp and assign it a value of 10
+	var ptr *int = &temp // Declare a pointer variable ptr and assign it the address of temp using the address-of operator (&)
+	fmt.Println("Value of temp:", temp) // Print the value of temp
+	fmt.Println("Address of temp:", &temp) // Print the address of temp
+	fmt.Println("Value of ptr:", ptr) // Print the value of ptr (address of temp)	
+
+	//***********************************Structs in go***************************************
+	// Structs are composite data types that allow you to group related data together. They can be used to define custom data structures with fields of different types.
+	
+
+	
+
+	// Create an instance of the Order struct using the newOrder function
+	order1 := newOrder(1, "Laptop", 2, 150000.00) // Call the newOrder function to create a new order
+	fmt.Println("Order 1:", order1) // Print the details of the first order
+
+	// Create an instance of the Order struct and initialize its fields
+	order := Order{
+		ID:       1, // Set the order ID
+		Product:  "Laptop", // Set the product name	
+		Quantity: 2, // Set the quantity of the product
+		Price:    150000.00, // Set the price of the product
+		//Total:    300000.00, // Set the total price (Quantity * Price)
+		createdAt: time.Now(), // Set the creation time of the order to the current time
+	}
+
+	// Calculate the total price of the order
+	order.Total = float64(order.Quantity) * order.Price // Calculate the total price (Quantity * Price)
+
+	// Print the details of the order
+	fmt.Println("Order ID:", order.ID) // Print the order ID
+	fmt.Println("Product:", order.Product) // Print the product name
+	fmt.Println("Quantity:", order.Quantity) // Print the quantity of the product	
+	fmt.Println("Price:", order.Price) // Print the price of the product
+	fmt.Println("Total:", order.Total) // Print the total price (Quantity * Price)
+	fmt.Println("Order Created At:", order.createdAt) // Print the creation time of the order
+
+	myOrder := Order{ // Create another instance of the Order struct
+		ID:       2, // Set the order ID
+		Product:  "Smartphone", // Set the product name
+		Quantity: 4, // Set the quantity of the product
+		Price:    50000.00, // Set the price of the product
+		Total:    200000.00, // Set the total price (Quantity * Price)
+		createdAt: time.Now(), // Set the creation time of the order to the current time
+	}
+
+	// Print the details of the second order
+	fmt.Println("myOrder:", myOrder) // Print the order
+	fmt.Println("myOrder ID:", myOrder.ID) // Print the order ID
+	fmt.Println("myOrder Product:", myOrder.Product) // Print the product name
+	fmt.Println("myOrder Quantity:", myOrder.Quantity) // Print the quantity of the product
+	fmt.Println("myOrder Price:", myOrder.Price) // Print the price of the product
+	fmt.Println("myOrder Total:", myOrder.Total) // Print the total price (Quantity * Price)
+	fmt.Println("myOrder Created At:", myOrder.createdAt.Format(time.RFC3339)) // Print the creation time of the order in RFC3339 format
+
 }
 
 // Function without parameters and return value
@@ -301,3 +363,27 @@ func makeIncrementer() func(int) int {
 		return count
 	}
 }
+
+// Structs in Go
+type Order struct { // Define a struct named Order
+		ID     int    // Field for the order ID	
+		Product string // Field for the product name
+		Quantity int // Field for the quantity of the product
+		Price  float64 // Field for the price of the product
+		Total  float64 // Field for the total price (Quantity * Price)
+		createdAt time.Time // Field for the creation time of the order
+	}
+
+// Function to create a new order
+// This function takes parameters to create a new order and returns an instance of the Order struct.
+func newOrder(id int, product string, quantity int, price float64) Order {
+		
+		return Order{
+			ID:       id,
+			Product:  product,
+			Quantity: quantity,
+			Price:    price,
+			Total:    float64(quantity) * price,
+			createdAt: time.Now(),
+		}
+	}
