@@ -383,6 +383,27 @@ func main() {
 	}()
 
 	wg.Wait() // Wait for all goroutines to complete
+
+	//***********************************Channels in go***************************************
+	// Channels are used to communicate between goroutines. They provide a way to send and receive values between goroutines, allowing for safe and synchronized communication.
+	// Channels are used to communicate between goroutines and allow for safe and synchronized communication.
+
+	// channel is blocking by default, meaning that when a goroutine sends a value to a channel, it will block until another goroutine receives that value from the channel.
+
+	ch := make(chan string) // Create a channel of type string
+	go func() { // Start a new goroutine
+		ch <- "Hello from Channel and Goroutine!" // Send a message to the channel
+	}()
+
+	message := <-ch // Receive the message from the channel
+	fmt.Println(message) // Print the received message
+
+
+	//***********************************Mutex in go***************************************
+	// Mutexes (mutual exclusions) are used to protect shared resources from concurrent access by multiple goroutines.
+	// They provide a way to ensure that only one goroutine can access a shared resource at a time, preventing race conditions. 
+
+
 }
 
 // Function to print a message
