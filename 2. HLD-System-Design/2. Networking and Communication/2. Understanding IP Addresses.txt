@@ -1,0 +1,67 @@
+Introduction to IP Addresses
+-> IP addresses are unique numerical identifiers assigned to devices on a network, allowing them to communicate with each other.
+-> They enable communication between diffrent machines , server and services over the internet.
+-> IP addresses are essential for routing data packets across networks, ensuring that information reaches its intended destination.
+-> There are two main versions of IP addresses: IPv4 and IPv6.
+-> IPv4 addresses are 32-bit numbers, typically represented in decimal format (e.g., 192.168.0.1).
+-> IPv6 addresses are 128-bit numbers, designed to accommodate the growing number of devices connected to the internet.
+-> IPv6 addresses are represented in hexadecimal format (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334).
+-> IP addresses can be classified into two main types: public and private.
+-> Public IP addresses are assigned by Internet Service Providers (ISPs) and are globally unique, allowing devices to be accessed over the internet.
+-> Private IP addresses are used within local networks and are not routable on the internet, providing a layer of security and address conservation.
+
+
+What is IPv4?
+-> IPv4 (Internet Protocol version 4) is the fourth version of the Internet Protocol (IP) and is widely used to identify devices on a network through an addressing system.
+-> It uses a 32-bit address scheme allowing for a total of 2^32 addresses (approximately 4.3 billion addresses).
+-> IPv4 addresses are typically represented in decimal format as four octets separated by periods (e.g., 192.168.0.1).
+-> Due to the rapid growth of the internet, the available IPv4 addresses have been exhausted, leading to the development of IPv6.
+-> uses : traditional networking , web servers and most current internet devices.
+
+What is IPv6?
+-> IPv6 (Internet Protocol version 6) is the sixth version of the Internet Protocol and is designed to replace IPv4 due to the exhaustion of available IPv4 addresses.
+-> It uses a 128-bit address scheme, allowing for a virtually unlimited number of unique addresses (approximately 340 undecillion addresses).
+-> IPv6 addresses are represented in hexadecimal format, divided into eight groups of four hexadecimal digits (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334).
+-> IPv6 addresses can also be abbreviated by omitting leading zeros and using double colons (::) to represent consecutive groups of zeros (e.g., 2001:db8:85a3::8a2e:370:7334).
+-> Designed for IOT devices, mobile devices and future internet growth.
+-> Key benefits of IPv6 include a larger address space, improved security features, and better support for modern networking technologies.
+
+
+Private vs Public IP Addresses
+
+Public:
+-> Assigned by ISPs ( Internet Service Providers).
+-> used to communicate over the internet.	
+-> Globally unique and routable on the internet.
+-> Can be accessed from anywhere on the internet.
+-> example: 203.0.113.1
+Private:
+-> Used within local networks (e.g., home, office).
+-> Not routable on the internet.
+-> Provides a layer of security and address conservation.
+-> Example ranges for private IP addresses include:
+   - 10.0.0.0 to 10.255.255.255
+   - 172.16.0.0 to 172.31.255.255
+   - 192.168.0.0 to 192.168.255.255
+
+
+Why do we need private IPs ?
+-> Conserves public addresses ( IPv4 limitation).
+-> Enhances security by isolating internal networks from the public internet.
+-> Enables network address translation (NAT) to allow multiple devices to share a single public IP address.
+-> Common in corporate networks , data centers, cloud environments and home networks.
+
+The Role of IP Addresses in System Design
+-> Scalability : Helps in designing distributed , multi region , and cloud-based architectures.
+-> Security : Enables firewall rules, VPNs and private networks.
+-> Load Balancing : Used IP-based traffic distribution across servers ( e.g., round-robin DNS).
+-> Cloud networking : Public, private and hybrid cloud architectures rely on IP addressing for resource allocation and communication.
+-> Microservices and containers : Use internal private ips for communication.
+
+
+Some interview questions 
+1. How do IPv4 and IPv6 differ ?
+2. Why do we need private IPs in system design ?
+3. How does NAT helps in addressing the IPv4 shortage ?
+4. Explain how load balancer distributes traffic using IPs ?
+5. How DNS resolve IP addresses in a large scale system ?
