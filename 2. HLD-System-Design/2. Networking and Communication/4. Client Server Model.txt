@@ -1,0 +1,66 @@
+What is client-server model?
+-> A computing model where client request services and server provide them.
+-> Foundation of modern web , database and application architectures.
+
+Why is it important?
+-> Enables efficient resource utilization.
+-> used in web browsing, email, file sharing, and more.
+-> Scalable and flexible architecture.
+-> Allows separation of concerns, improving maintainability.
+
+Real-world examples:
+-> Web applications (e.g., Google, Facebook) where browsers act as clients and web servers provide resources.
+-> Mobile applications that communicate with backend servers for data and functionality.
+-> Online gaming platforms where game clients connect to game servers for real-time interaction.
+
+Key components:
+1. Client: 
+ ->User facing application that requests services or resources.
+ -> Can be a web browser, mobile app, or any software that interacts with a server.
+2. Server: 
+ ->A system that processes requests and returns responses.
+ -> Can be a web server, database server, or application server.
+3. Network: 
+ -> The medium that facilitates communication between clients and servers.
+ -> Examples include LAN (Local Area Network), WAN (Wide Area Network), and the Internet.
+
+How Client-Server Model Communicates:
+ 1. Basic Steps:
+ -> Client sends a request to the server over the network.
+ -> Request is transmitted over the network.
+ -> Server processes the request and sends a response back to the client.
+ -> Client receives the response and displays or processes it.
+
+ 2. Types of communication:
+ -> Request-Response Model:
+   -> Client sends a request and waits for a response.
+   -> e.g., HTTP requests in web applications.
+ -> Persistent Connections:
+   -> Client maintains a connection with the server for multiple requests.
+   -> e.g., WebSockets for real-time communication.
+
+The Request-Response Cycle:
+1. Browser requests https://www.example.com/
+2. DNS resolves the domain to an IP address.
+3. Browser sends an HTTP GET request to the server.
+4. Server processes the request and sends back an HTTP response.
+5. Browser renders the response content for the user.
+
+Synchronous vs Asynchronous Communication:
+-> Synchronous:
+   -> Client sends a request and waits for a response.
+   -> e.g., Traditional HTTP requests. Used in Rest APIs and traditional web applications.
+-> Asynchronous:
+   -> Client sends a request and continues processing without waiting for a response.
+   -> e.g., AJAX requests, WebSockets. used in real-time applications like chat apps or live updates.
+
+Stateless vs Stateful :
+-> Stateless:
+   -> No memory of previous requests.
+   -> Each request is independent and contains all necessary information.
+   -> e.g., HTTP is stateless; each request is independent.
+   -> benefits include scalability , easy caching and load balancing.
+-> Stateful:
+   -> Server maintains state information across multiple requests.
+   -> e.g., Websockets , multiplayer games , banking applications.
+   -> benefits: Personalization , seamless user experience, and complex interactions.
