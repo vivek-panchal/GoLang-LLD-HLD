@@ -2,7 +2,7 @@
 
 ---
 
-### ❓ What is System Design?
+### What is System Design?
 
 **Answer:**
 
@@ -20,7 +20,7 @@ In simple terms, it’s about **creating the blueprint of a large-scale system**
 
 ---
 
-### ❓ Why is System Design Important?
+### Why is System Design Important?
 
 **Answer:**
 
@@ -35,9 +35,9 @@ System Design is important because it ensures that a system can **scale, perform
 5. **Cost Efficiency** – Optimizes infrastructure and operational costs.
 
 ---
+## Network & Communication
 
-
-### ❓ Why Does Networking Matter in System Design?
+### Why Does Networking Matter in System Design?
 
 **Answer:**
 
@@ -53,7 +53,7 @@ Networking is the **backbone of distributed systems** — every service-to-servi
 
 ---
 
-### ❓ How Does Networking Impact Large-Scale Systems?
+### How Does Networking Impact Large-Scale Systems?
 
 **Answer:**
 
@@ -74,7 +74,7 @@ In large-scale systems, **networking directly affects performance, scalability, 
 
 ---
 
-### ❓ Introduction to IP Address
+### Introduction to IP Address
 
 **Answer:**
 
@@ -95,7 +95,7 @@ An **IP (Internet Protocol) Address** is a unique identifier assigned to every d
 
 ---
 
-### ❓ What is IPv4?
+### What is IPv4?
 
 **Answer:**
 
@@ -111,7 +111,7 @@ An **IP (Internet Protocol) Address** is a unique identifier assigned to every d
 
 ---
 
-### ❓ What is IPv6?
+### What is IPv6?
 
 **Answer:**
 
@@ -127,7 +127,7 @@ An **IP (Internet Protocol) Address** is a unique identifier assigned to every d
 
 ---
 
-### ❓ Private vs Public IP Address
+### Private vs Public IP Address
 
 **Answer:**
 
@@ -148,7 +148,7 @@ Public IP = for external (internet) communication.
 
 ---
 
-### ❓ Why Do We Need Private IPs?
+### Why Do We Need Private IPs?
 
 **Answer:**
 
@@ -167,7 +167,7 @@ Private IPs make internal networking **secure, scalable, and cost-effective** wi
 
 ---
 
-### ❓ The Role of IP in System Design
+### The Role of IP in System Design
 
 **Answer:**
 
@@ -184,5 +184,207 @@ IP (Internet Protocol) plays a fundamental role in system design by enabling **c
 
 **In short:**
 IP addresses are the **foundation of connectivity** in any large-scale system — making communication, scalability, and reliability possible.
+
+---
+
+## 🌐 How DNS Works
+
+---
+
+### Introduction to DNS
+
+**Answer:**
+
+**DNS (Domain Name System)** is the **internet’s phonebook**, translating **human-readable domain names** (like `google.com`) into **IP addresses** (like `142.250.190.78`) that computers use to identify each other on a network.
+
+Without DNS, users would have to remember complex IP addresses to access websites.
+
+**Key Points:**
+
+1. **Purpose:** Converts domain names to IP addresses for easy access.
+2. **Analogy:** Just like saving a contact name instead of remembering a phone number.
+3. **Function:** When you enter a website URL, DNS finds the correct IP so your browser can connect to the right server.
+4. **Hierarchy:** DNS operates through a distributed hierarchy of servers — Root, TLD, and Authoritative servers.
+5. **Performance:** DNS caching helps speed up future lookups and reduce latency.
+
+**In short:**
+DNS makes the internet **human-friendly** by bridging the gap between names and numerical IP addresses.
+
+---
+
+### Types of DNS Servers
+
+**Answer:**
+
+DNS operates through a **hierarchy of servers**, each playing a specific role in resolving a domain name to its IP address. The resolution process usually involves multiple servers working together.
+
+**Main Types of DNS Servers:**
+
+1. **Recursive Resolver:**
+
+   * The first server contacted by your browser or device.
+   * Responsible for querying other DNS servers to find the correct IP address.
+   * Often managed by ISPs or public DNS providers (e.g., Google DNS `8.8.8.8`).
+
+2. **Root DNS Server:**
+
+   * The starting point of DNS resolution.
+   * Directs queries to the correct **Top-Level Domain (TLD)** server (like `.com`, `.org`, `.net`).
+
+3. **TLD (Top-Level Domain) Server:**
+
+   * Manages domain extensions (e.g., `.com`, `.in`, `.org`).
+   * Points to the **Authoritative DNS Server** of the specific domain.
+
+4. **Authoritative DNS Server:**
+
+   * The final source of truth for a domain.
+   * Holds actual DNS records (like A, AAAA, MX, and CNAME) and provides the corresponding IP address.
+
+**In short:**
+The DNS resolution chain works as:
+**Client → Recursive Resolver → Root Server → TLD Server → Authoritative Server → IP Address Returned**
+
+---
+
+### DNS Caching and Performance Optimization
+
+---
+
+### Why Caching Matters
+
+**Answer:**
+
+DNS caching is crucial because it **reduces lookup time** and **improves performance** by storing previously resolved domain-to-IP mappings.
+Instead of querying DNS servers repeatedly, the system can reuse cached results, leading to **faster response times** and **lower network load**.
+
+**Benefits:**
+
+* Reduces DNS query latency.
+* Minimizes load on upstream DNS servers.
+* Improves user experience with quicker website access.
+* Decreases bandwidth and infrastructure costs.
+
+---
+
+### Where Caching Occurs
+
+**Answer:**
+
+Caching can happen at multiple layers in the DNS resolution chain:
+
+1. **Browser Cache:**
+   Stores recent DNS lookups for a short duration to speed up repeated visits.
+
+2. **Operating System (OS) Cache:**
+   The OS maintains a local DNS cache shared across applications.
+
+3. **Recursive Resolver Cache:**
+   ISPs or public resolvers (like Google DNS, Cloudflare DNS) cache responses to serve multiple users efficiently.
+
+4. **CDN or Proxy Cache:**
+   Content Delivery Networks often cache DNS responses close to users to reduce lookup distance.
+
+---
+
+### What is TTL (Time To Live)
+
+**Answer:**
+
+**TTL (Time To Live)** defines how long a DNS record can be stored in a cache before it must be refreshed from the authoritative server.
+It’s measured in **seconds** and balances freshness with performance.
+
+**Example:**
+If a DNS record has a TTL of `3600`, it means the cached record is valid for **1 hour**.
+
+**Key Insight:**
+
+* **Higher TTL:** Better performance, slower updates.
+* **Lower TTL:** Faster updates, more DNS lookups.
+
+---
+
+### The Domain Name Resolution Process — Step-by-step
+
+**Answer:**
+
+1. **User enters URL / app requests domain**
+   The client (browser or app) starts by asking the OS to resolve the domain name.
+
+2. **Browser cache check**
+   Browser checks its internal DNS cache. If found and not expired, use it and finish.
+
+3. **OS / Local resolver cache**
+   If browser cache misses, the OS DNS cache (or local DNS resolver) is checked next.
+
+4. **Hosts file check**
+   The OS checks the local `hosts` file for a static mapping. If present, use it.
+
+5. **Query to Recursive Resolver**
+   If still unresolved, the OS sends a DNS query to the configured recursive resolver (usually ISP or public DNS like 8.8.8.8). The recursive resolver will perform the full resolution on behalf of the client.
+
+6. **Recursive resolver cache**
+   The resolver checks its cache. If a cached answer exists and is valid (TTL not expired), it returns the IP to the client.
+
+7. **Root server query (if no cache)**
+   If the resolver has no cached answer, it queries a Root DNS server. The Root responds with the authoritative TLD server location for the domain’s extension (e.g., `.com`).
+
+8. **TLD server query**
+   The resolver queries the TLD server returned by the Root. The TLD responds with the authoritative name server(s) for the specific domain.
+
+9. **Authoritative server query**
+   The resolver queries the domain’s authoritative DNS server. The authoritative server returns the final DNS record (A, AAAA, CNAME, etc.) with its TTL.
+
+10. **Resolver returns result to client**
+    The recursive resolver caches the answer (for TTL seconds) and returns the IP address to the client.
+
+11. **Client caches the result**
+    The OS and browser cache the record according to TTL for future requests.
+
+12. **Client connects to server**
+    With the IP known, the client initiates a TCP/TLS connection (e.g., TCP handshake, TLS handshake) to the server and requests the resource (HTTP request).
+
+13. **Subsequent requests**
+    Subsequent lookups follow the same flow but often end at cache layers (browser, OS, resolver) until TTL expiry.
+
+Notes:
+
+* Caching at multiple layers reduces lookup time and network load.
+* Recursive resolvers can perform iterative queries: they query Root → TLD → Authoritative and assemble the answer.
+* Modern variants include DNS over HTTPS (DoH) and DNS over TLS (DoT), which encrypt DNS queries between client and resolver.
+
+---
+
+### Importance of DNS in Large-Scale Systems
+
+**Answer:**
+
+DNS plays a **critical role in large-scale systems** by ensuring smooth routing, scalability, and high availability across distributed infrastructure. It acts as the **entry point** for almost every user request to reach the right server or service.
+
+**Key Reasons:**
+
+1. **Traffic Routing:**
+   DNS directs user requests to appropriate servers, data centers, or regions based on geography, latency, or load.
+
+2. **Scalability:**
+   Enables horizontal scaling by balancing traffic across multiple IPs or service instances.
+
+3. **High Availability:**
+   Allows failover by rerouting traffic to healthy servers or backup regions when one fails.
+
+4. **Load Balancing Integration:**
+   Works with DNS-based load balancing (like round-robin or geo-DNS) to distribute requests efficiently.
+
+5. **Performance Optimization:**
+   DNS caching reduces resolution time, improving user experience for global systems.
+
+6. **Service Discovery:**
+   Helps microservices find each other dynamically through DNS-based service registries.
+
+7. **Security and Control:**
+   Supports protection via DNS filtering, DNSSEC, and traffic management policies.
+
+**In summary:**
+DNS is not just a name-to-IP translator—it’s a **strategic component** in system design that ensures **speed, resilience, and global scalability** in modern distributed systems.
 
 ---
