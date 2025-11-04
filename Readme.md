@@ -491,7 +491,6 @@ Client and server communication happens through a **network** using well-defined
    * Example: Message queues (Kafka, RabbitMQ), WebSockets, event-driven systems.
    * Useful for high-performance, decoupled architectures.
 
----
 
 **In short:**
 Clients and servers communicate by **exchanging requests and responses** over network protocols — either **synchronously** for direct interactions or **asynchronously** for scalable, event-driven systems.
@@ -599,7 +598,6 @@ A message is sent to a queue (e.g., Kafka, RabbitMQ), and the server processes i
 * Event-driven systems (order processing, analytics).
 * Microservice communication through queues or pub/sub.
 
----
 
 **In short:**
 
@@ -670,7 +668,6 @@ Online banking applications, multiplayer games, or chat applications often requi
 | **Complexity**      | Simpler                  | More complex            |
 | **Example**         | REST API                 | Online banking system   |
 
----
 
 In summary, **stateless servers** are ideal for scalability and reliability, while **stateful servers** are necessary when maintaining session continuity or user context across interactions.
 
