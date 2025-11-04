@@ -656,7 +656,6 @@ Online banking applications, multiplayer games, or chat applications often requi
 * Multiplayer online games.
 * E-commerce carts with server-side sessions.
 
----
 
 ### **Key Differences**
 
@@ -670,6 +669,121 @@ Online banking applications, multiplayer games, or chat applications often requi
 
 
 In summary, **stateless servers** are ideal for scalability and reliability, while **stateful servers** are necessary when maintaining session continuity or user context across interactions.
+
+---
+
+## Proxy
+
+A **proxy** is an intermediary server that sits between a **client** and a **destination server**, forwarding requests and responses between them. It acts as a gateway, managing communication, enhancing performance, improving security, and providing anonymity.
+
+---
+
+### **How It Works**
+
+When a client sends a request, it first goes to the proxy server.
+
+* The **proxy** forwards the request to the destination server on behalf of the client.
+* The **response** from the destination server returns to the proxy, which then sends it back to the client.
+
+This setup allows the proxy to **inspect, modify, cache, or filter** traffic as needed.
+
+
+### **Key Benefits**
+
+* **Security:** Hides client IPs and filters malicious requests.
+* **Caching:** Stores frequently accessed data to reduce latency and bandwidth usage.
+* **Load Management:** Distributes traffic among multiple servers.
+* **Access Control:** Restricts access to certain content or sites.
+* **Anonymity:** Masks client identity for privacy.
+
+
+### **Common Types of Proxies**
+
+* **Forward Proxy:** Acts on behalf of clients (used for caching or filtering outgoing requests).
+* **Reverse Proxy:** Acts on behalf of servers (used for load balancing, SSL termination, and caching).
+
+
+In short, a **proxy** is a middle layer that improves **security, performance, and scalability** in distributed systems.
+
+---
+
+
+### Forward Proxy
+
+A **forward proxy** is a server that sits **between the client and the internet**, acting on behalf of the **client** to send requests to external servers. It hides the client’s identity and can control or monitor outbound traffic.
+
+
+### **How It Works**
+
+1. The client sends a request to the forward proxy.
+2. The proxy checks policies, caching, or filters before forwarding it to the target server.
+3. The server’s response returns to the proxy, which then forwards it back to the client.
+
+
+### **Key Use Cases**
+
+* **Access Control:** Restricts user access to specific websites or resources.
+* **Caching:** Stores frequently accessed data to reduce network load and latency.
+* **Anonymity:** Masks client IP addresses for privacy.
+* **Monitoring:** Logs or inspects outbound traffic for security or analytics.
+
+
+### **Example**
+
+In a corporate network, a forward proxy ensures all employee web requests go through it — enforcing policies and blocking unauthorized sites.
+
+
+**In essence**, a **forward proxy** primarily represents the **client**, helping manage, filter, and optimize outgoing traffic to external servers.
+
+---
+---
+
+### Reverse Proxy
+
+A **reverse proxy** is a server that sits **in front of one or more backend servers** and acts on behalf of those servers to handle incoming client requests. It hides the details of the backend infrastructure and manages traffic efficiently.
+
+
+### **How It Works**
+
+1. The client sends a request to the reverse proxy (instead of directly to the backend server).
+2. The reverse proxy determines which backend server should handle the request.
+3. It forwards the request, receives the response from the server, and sends it back to the client.
+
+The client never directly communicates with the backend servers.
+
+### **Key Use Cases**
+
+* **Load Balancing:** Distributes incoming traffic across multiple servers for better scalability.
+* **Security:** Masks backend servers’ IP addresses and filters malicious requests.
+* **Caching:** Stores static or frequently accessed responses to reduce server load.
+* **SSL Termination:** Handles SSL/TLS encryption and decryption to offload backend servers.
+* **Compression & Optimization:** Improves response speed and bandwidth efficiency.
+
+### **Example**
+
+A website like `example.com` may use **NGINX** as a reverse proxy to route traffic among multiple application servers, cache responses, and manage SSL certificates.
+
+**In summary**, a **reverse proxy** acts on behalf of **servers**, improving performance, scalability, and security in large-scale systems.
+
+---
+
+### Difference Between Forward and Reverse Proxy
+
+| **Aspect**              | **Forward Proxy**                                  | **Reverse Proxy**                                  |
+| ----------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| **Acts On Behalf Of**   | Client                                             | Server                                             |
+| **Primary Purpose**     | Controls and manages outbound traffic from clients | Manages and optimizes inbound traffic to servers   |
+| **Visibility**          | The target server does not know the real client    | The client does not know the real backend server   |
+| **Typical Use Cases**   | Caching, access control, anonymity, monitoring     | Load balancing, security, caching, SSL termination |
+| **Location in Network** | Sits between client and the internet               | Sits between internet and backend servers          |
+| **Example Tools**       | Squid, Privoxy                                     | NGINX, HAProxy, Apache HTTP Server (mod_proxy)     |
+| **Used By**             | Clients (e.g., corporate users)                    | Servers (e.g., web applications)                   |
+
+
+**In short:**
+
+* A **forward proxy** protects and represents **clients**.
+* A **reverse proxy** protects and represents **servers**.
 
 ---
 
