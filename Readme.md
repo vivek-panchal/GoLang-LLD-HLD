@@ -388,3 +388,291 @@ DNS plays a **critical role in large-scale systems** by ensuring smooth routing,
 DNS is not just a name-to-IP translator—it’s a **strategic component** in system design that ensures **speed, resilience, and global scalability** in modern distributed systems.
 
 ---
+
+### 🖥️ Client-Server Model
+
+---
+
+### What is the Client-Server Model?
+
+**Answer:**
+
+The **Client-Server Model** is a **network architecture** where multiple clients (users or devices) request and receive services or data from a centralized server. The **server** hosts, manages, and delivers resources, while the **client** consumes them.
+
+**Key Points:**
+
+1. **Client:** Sends requests (e.g., browser, mobile app, API consumer).
+2. **Server:** Processes requests and sends responses (e.g., web server, database server).
+3. **Communication:** Usually happens over a network using standard protocols like HTTP or TCP/IP.
+4. **Scalability:** Multiple clients can interact with one or more servers concurrently.
+5. **Examples:**
+
+   * Web browsing (browser → web server)
+   * Mobile apps using backend APIs
+   * Database queries (application → DB server)
+
+**In short:**
+The client-server model forms the **foundation of modern internet architecture**, enabling distributed computing and centralized control.
+
+---
+
+### Key Components of the Client-Server Model
+
+**Answer:**
+
+The Client-Server Model consists of several core components that work together to enable communication, data exchange, and service delivery between clients and servers.
+
+**Key Components:**
+
+1. **Client:**
+   The end-user device or application that sends requests to access data or services (e.g., web browser, mobile app, API consumer).
+
+2. **Server:**
+   The centralized system that receives client requests, processes them, and returns responses (e.g., web server, database server, file server).
+
+3. **Network:**
+   The medium that connects clients and servers, enabling data transmission over LAN, WAN, or the internet.
+
+4. **Request:**
+   The message sent by the client to the server, specifying what data or operation is needed.
+
+5. **Response:**
+   The server’s reply to the client, containing the requested data or the result of an operation.
+
+6. **Protocols:**
+   The communication rules that define how clients and servers interact — commonly **HTTP/HTTPS**, **TCP/IP**, **WebSocket**, etc.
+
+7. **Database (optional):**
+   A backend component where the server stores and retrieves persistent data.
+
+**In summary:**
+These components together create a structured system where clients **request**, servers **process**, and networks **connect**, forming the basis of all web and distributed applications.
+
+---
+
+### How Do Client and Server Communicate?
+
+**Answer:**
+
+Client and server communication happens through a **network** using well-defined **protocols** (like HTTP or TCP/IP). The client initiates a **request**, and the server processes it and sends back a **response**. This exchange enables everything from web browsing to API calls.
+
+---
+
+### **Basic Steps of Communication**
+
+1. **Connection Establishment:**
+   The client establishes a connection with the server, typically over TCP/IP.
+
+2. **Request Sending:**
+   The client sends a request (e.g., an HTTP GET or POST) to the server specifying what it needs.
+
+3. **Processing by Server:**
+   The server receives the request, processes it (e.g., fetches data, runs logic), and prepares a response.
+
+4. **Response Sending:**
+   The server sends the response (data or status) back to the client.
+
+5. **Connection Termination (or Reuse):**
+   The connection is closed, or kept alive for further requests (using persistent connections).
+
+---
+
+### **Types of Client-Server Communication**
+
+1. **Synchronous Communication:**
+
+   * The client waits for the server to respond before proceeding.
+   * Example: HTTP request from a browser to a web server.
+   * Suitable for real-time, request-response systems.
+
+2. **Asynchronous Communication:**
+
+   * The client doesn’t wait for an immediate response; communication happens in the background.
+   * Example: Message queues (Kafka, RabbitMQ), WebSockets, event-driven systems.
+   * Useful for high-performance, decoupled architectures.
+
+---
+
+**In short:**
+Clients and servers communicate by **exchanging requests and responses** over network protocols — either **synchronously** for direct interactions or **asynchronously** for scalable, event-driven systems.
+
+---
+
+### The HTTP Request–Response Cycle
+
+**Answer:**
+
+The HTTP request–response cycle is the standard flow where a client (browser or app) sends an HTTP request to a server, the server processes it, and returns an HTTP response. It includes optional TCP/TLS handshakes, routing via proxies/load balancers, and caching layers.
+
+**Basic Steps (short):**
+
+1. **DNS lookup** — resolve domain to IP.
+2. **TCP handshake** — client and server establish a TCP connection (SYN, SYN-ACK, ACK).
+3. **TLS handshake (optional)** — negotiate encryption (if HTTPS).
+4. **HTTP request** — client sends request line, headers, optional body.
+5. **Server processing** — server (and backend services/databases) handle the request.
+6. **HTTP response** — server sends status line, headers, and body.
+7. **Connection close / keep-alive** — connection either closed or reused.
+8. **Client processes response** — render page, cache, or follow redirects.
+
+---
+
+### ASCII Flow (fallback)
+
+```
+Client
+  |
+  v
+DNS lookup -> TCP handshake -> (TLS handshake if HTTPS)
+  |
+  v
+Send HTTP Request (request-line + headers + body)
+  |
+  v
+[Load Balancer / Reverse Proxy]
+  |
+  v
+Web/App Server ---> Backend services / Database
+  |
+  v
+HTTP Response (status + headers + body)
+  |
+  v
+Client (render / cache / follow-up)
+  |
+  v
+Connection closed or reused (keep-alive)
+```
+
+---
+
+### Synchronous and Asynchronous Communication Model
+
+**Answer:**
+
+In system design, **synchronous** and **asynchronous** communication models define **how services exchange data** and **when they wait for responses**.
+Choosing between them affects **performance**, **scalability**, and **user experience**.
+
+---
+
+### **1. Synchronous Communication**
+
+**Definition:**
+In synchronous communication, the **client waits** for the server to respond before continuing its work. The interaction happens in **real-time**.
+
+**Example:**
+A web browser sending an HTTP request and waiting for the server’s response.
+
+**Characteristics:**
+
+* Request and response occur in the same session.
+* Simpler to implement and debug.
+* Tight coupling between client and server availability.
+* Higher latency if one service is slow.
+
+**Use Cases:**
+
+* API calls (REST, gRPC sync).
+* Payment gateways.
+* Real-time validation (login, form submission).
+
+---
+
+### **2. Asynchronous Communication**
+
+**Definition:**
+In asynchronous communication, the **client doesn’t wait** for an immediate response. Requests are **queued or processed in the background**, and the client is notified later.
+
+**Example:**
+A message is sent to a queue (e.g., Kafka, RabbitMQ), and the server processes it later.
+
+**Characteristics:**
+
+* Non-blocking and decoupled communication.
+* Higher scalability and fault tolerance.
+* More complex to design (needs message queues, event handling).
+* Delayed response or eventual consistency.
+
+**Use Cases:**
+
+* Background jobs (email, notifications).
+* Event-driven systems (order processing, analytics).
+* Microservice communication through queues or pub/sub.
+
+---
+
+**In short:**
+
+* **Synchronous:** Real-time, blocking, simple.
+* **Asynchronous:** Background, non-blocking, scalable.
+
+---
+
+### Stateless and Stateful Servers
+
+In system design, servers are often categorized as **stateless** or **stateful** depending on whether they retain information (state) about client interactions between requests. Understanding this distinction is critical for designing scalable and reliable distributed systems.
+
+---
+
+### **1. Stateless Server**
+
+**Definition:**
+A **stateless server** does **not store any client-specific data** between requests. Each request from the client contains all the necessary information for the server to process it.
+
+**Characteristics:**
+
+* Each request is independent.
+* Easier to scale horizontally since any server can handle any request.
+* Simpler to maintain and recover after failures.
+* No session data stored on the server side.
+
+**Example:**
+HTTP is inherently a stateless protocol. REST APIs are typically designed to be stateless, meaning every request must include authentication tokens and all required context.
+
+**Use Cases:**
+
+* Web APIs (RESTful services).
+* Content delivery systems.
+* Load-balanced environments.
+
+---
+
+### **2. Stateful Server**
+
+**Definition:**
+A **stateful server** maintains information about the client’s session across multiple requests. The server “remembers” previous interactions to provide continuity.
+
+**Characteristics:**
+
+* Server stores client-specific session data.
+* Requests depend on prior interactions.
+* Harder to scale horizontally because sessions must be maintained or shared.
+* Requires session management mechanisms (e.g., sticky sessions, distributed caches).
+
+**Example:**
+Online banking applications, multiplayer games, or chat applications often require stateful servers to track user sessions and data.
+
+**Use Cases:**
+
+* Real-time chat systems.
+* Multiplayer online games.
+* E-commerce carts with server-side sessions.
+
+---
+
+### **Key Differences**
+
+| Aspect              | Stateless Server         | Stateful Server         |
+| ------------------- | ------------------------ | ----------------------- |
+| **Session Data**    | Not stored on the server | Stored on the server    |
+| **Scalability**     | Highly scalable          | Harder to scale         |
+| **Fault Tolerance** | Easier to recover        | Session loss on failure |
+| **Complexity**      | Simpler                  | More complex            |
+| **Example**         | REST API                 | Online banking system   |
+
+---
+
+In summary, **stateless servers** are ideal for scalability and reliability, while **stateful servers** are necessary when maintaining session continuity or user context across interactions.
+
+---
+
