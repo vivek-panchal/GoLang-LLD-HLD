@@ -787,3 +787,171 @@ A website like `example.com` may use **NGINX** as a reverse proxy to route traff
 
 ---
 
+## Load Balancing
+
+### Why Load Balancing is Needed
+
+**Load balancing** is essential for distributing incoming network or application traffic evenly across multiple servers. It ensures that no single server becomes a bottleneck, improving **availability**, **performance**, and **scalability** of the system.
+
+---
+
+### **Key Reasons for Using Load Balancing**
+
+1. **High Availability:**
+   If one server fails, traffic can be automatically redirected to healthy servers, preventing downtime.
+
+2. **Scalability:**
+   Easily add or remove servers based on demand without affecting users.
+
+3. **Optimized Resource Utilization:**
+   Balances requests to prevent overloading certain servers while others remain idle.
+
+4. **Improved Performance:**
+   Reduces response time by routing requests to the least-loaded or nearest server.
+
+5. **Fault Tolerance:**
+   Helps maintain smooth operations even when individual components fail.
+
+6. **Maintenance Without Downtime:**
+   Servers can be updated or maintained without interrupting user access.
+
+In short, **load balancing** enables systems to handle large-scale traffic efficiently, ensuring reliability and a seamless user experience.
+
+---
+
+### Types of Load Balancers
+
+Load balancers can be classified in two main ways — **based on the OSI layer they operate on** and **based on how they are deployed**.
+
+---
+
+### **1. Based on Layer**
+
+| **Type**                                      | **Layer**                    | **Description**                                                                                             | **Example Use Case**                                                                                       |
+| --------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Layer 4 Load Balancer (Transport Layer)**   | Operates at TCP/UDP level    | Routes traffic based on network information such as IP address and port. Does not inspect application data. | Useful for simple, fast routing — e.g., balancing HTTP or database traffic.                                |
+| **Layer 7 Load Balancer (Application Layer)** | Operates at HTTP/HTTPS level | Makes routing decisions based on content (URL path, headers, cookies, etc.).                                | Ideal for intelligent routing — e.g., sending image requests to a CDN and API requests to backend servers. |
+
+---
+
+### **2. Based on Deployment**
+
+| **Type**                        | **Description**                                                                             | **Examples**                                              |
+| ------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| **Hardware Load Balancer**      | Physical appliance designed for high-performance load balancing in enterprise data centers. | F5, Citrix ADC                                            |
+| **Software Load Balancer**      | Runs on general-purpose servers; more flexible and cost-effective.                          | NGINX, HAProxy, Apache HTTP Server                        |
+| **Cloud/Managed Load Balancer** | Provided as a managed service by cloud providers; automatically scales and manages routing. | AWS ELB, Google Cloud Load Balancing, Azure Load Balancer |
+
+---
+
+**In summary:**
+
+* **Layer-based** load balancers decide *how* routing happens (network vs. application level).
+* **Deployment-based** load balancers decide *where* and *what kind* of infrastructure handles the balancing.
+
+---
+
+### Load Balancing Strategies
+
+Load balancing strategies define **how traffic is distributed** across servers. They can be broadly categorized into **static** and **dynamic** approaches.
+
+---
+
+### **1. Static Load Balancing**
+
+In **static load balancing**, the traffic distribution is **predefined** and does **not depend on real-time server load or performance**. The load balancer follows fixed algorithms to decide which server handles each request.
+
+**Key Characteristics:**
+
+* Simpler to implement.
+* No monitoring of server health or performance.
+* Best suited for systems where server capacities are uniform and predictable.
+
+**Common Algorithms:**
+
+* **Round Robin:** Requests are distributed sequentially across servers.
+* **Weighted Round Robin:** Servers with higher capacity get more requests.
+* **IP Hashing:** Requests from the same client IP always go to the same server.
+
+**Example:**
+A set of identical web servers handling equal-sized requests using Round Robin distribution.
+
+---
+
+### **2. Dynamic Load Balancing**
+
+In **dynamic load balancing**, the distribution **adapts in real time** based on the **current load, health, and performance** of servers.
+
+**Key Characteristics:**
+
+* Requires monitoring of CPU, memory, or response time.
+* Automatically adjusts to handle changing workloads.
+* Better suited for large-scale, high-traffic, or variable-load systems.
+
+**Common Algorithms:**
+
+* **Least Connections:** Routes requests to the server with the fewest active connections.
+* **Least Response Time:** Sends requests to the server responding fastest.
+* **Resource-Based:** Considers metrics like CPU or memory usage for routing.
+
+**Example:**
+A dynamic web application routing traffic to the least busy or fastest-responding server to ensure consistent performance.
+
+---
+
+**In summary:**
+
+* **Static** strategies are simple but inflexible.
+* **Dynamic** strategies are intelligent and adaptive for modern, large-scale systems.
+
+---
+
+### Choosing the Right Load Balancer
+
+Selecting the right load balancer depends on your **system architecture**, **traffic patterns**, **scalability goals**, and **operational requirements**. The goal is to balance **performance, cost, and complexity** while ensuring reliability.
+
+
+### **Key Factors to Consider**
+
+1. **Traffic Type and Protocols**
+
+   * For low-level TCP/UDP traffic → use a **Layer 4** load balancer.
+   * For HTTP/HTTPS or content-based routing → use a **Layer 7** load balancer.
+
+2. **Scalability Needs**
+
+   * If you expect traffic to grow dynamically, a **cloud-based or software load balancer** with auto-scaling support is ideal.
+
+3. **Budget and Infrastructure**
+
+   * **Hardware load balancers** offer performance but are expensive.
+   * **Software or cloud load balancers** are cost-effective and easier to maintain.
+
+4. **Health Monitoring and Failover**
+
+   * Choose a load balancer that supports real-time **health checks** and **automatic rerouting** on server failures.
+
+5. **Security Requirements**
+
+   * For SSL termination, DDoS protection, or request filtering, go with a **reverse proxy-based load balancer** (e.g., NGINX, AWS ALB).
+
+6. **Deployment Environment**
+
+   * **On-premises systems** → Hardware or software load balancer.
+   * **Cloud-native systems** → Managed services like AWS ELB, GCP Load Balancer, or Azure LB.
+
+
+### **Examples**
+
+| **Scenario**                            | **Recommended Load Balancer**         |
+| --------------------------------------- | ------------------------------------- |
+| Static website with predictable traffic | NGINX (software L4/L7)                |
+| Scalable microservice-based system      | AWS Application Load Balancer         |
+| Enterprise data center                  | F5 Hardware Load Balancer             |
+| API gateway for large-scale apps        | HAProxy or NGINX with Layer 7 routing |
+
+
+**In summary:**
+Choose a load balancer that aligns with your **traffic patterns**, **scaling requirements**, and **operational constraints** while ensuring high availability and performance.
+
+---
