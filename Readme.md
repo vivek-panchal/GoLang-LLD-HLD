@@ -35,7 +35,7 @@ System Design is important because it ensures that a system can **scale, perform
 5. **Cost Efficiency** – Optimizes infrastructure and operational costs.
 
 ---
-## Network & Communication
+## 1. Network & Communication
 
 ### Why Does Networking Matter in System Design?
 
@@ -1470,3 +1470,767 @@ Modern CDNs are not just for websites — they also accelerate **API traffic** a
 APIs become faster, more reliable, and scalable — improving end-user experience and backend efficiency.
 
 ---
+## 2. PROTOCOLS
+
+## **TCP & UDP**
+
+
+### **What is TCP?**
+
+**TCP (Transmission Control Protocol)** is a **connection-oriented** protocol used to ensure **reliable and ordered data transmission** between systems over a network.
+
+#### **Key Characteristics:**
+
+* **Connection-Oriented:** Establishes a connection using a three-way handshake before data transfer.
+* **Reliable:** Guarantees delivery with acknowledgment and retransmission of lost packets.
+* **Ordered Delivery:** Ensures packets arrive in the same sequence they were sent.
+* **Error Checking:** Detects and corrects transmission errors using checksums.
+* **Flow & Congestion Control:** Adjusts data transfer rate based on network conditions.
+
+#### **Use Cases:**
+
+* Web browsing (HTTP/HTTPS)
+* Email (SMTP, IMAP, POP3)
+* File transfers (FTP)
+
+**In system design**, TCP is ideal when **data accuracy and reliability** are more important than speed.
+
+---
+
+### **What is UDP?**
+
+**UDP (User Datagram Protocol)** is a **connectionless** communication protocol that focuses on **speed and low latency** rather than reliability.
+
+#### **Key Characteristics:**
+
+* **Connectionless:** No handshake; data is sent directly without establishing a connection.
+* **Unreliable Delivery:** Packets may be lost, duplicated, or arrive out of order — no acknowledgment or retransmission.
+* **Lightweight & Fast:** Minimal overhead, making it faster than TCP.
+* **No Flow Control:** Sender transmits data without checking receiver’s capacity.
+
+#### **Use Cases:**
+
+* Real-time streaming (video/audio)
+* Online gaming
+* VoIP (Voice over IP)
+* DNS lookups
+
+**In system design**, UDP is preferred when **speed and real-time communication** matter more than guaranteed delivery.
+
+---
+
+## **HTTP – The Backbone of the Web**
+
+### **Introduction to HTTP**
+
+**HTTP (HyperText Transfer Protocol)** is an **application-layer protocol** that defines how data is transmitted between a **client (usually a browser)** and a **server** over the web.
+
+It is the **foundation of communication** for websites, APIs, and web services.
+
+#### **Key Characteristics:**
+
+* **Stateless:** Each request is independent; the server doesn’t retain client context.
+* **Text-based & Simple:** Easy to read and debug.
+* **Request–Response Model:** The client sends a request, and the server responds with data (HTML, JSON, etc.).
+* **Extensible:** Supports methods, headers, and status codes for flexible communication.
+
+#### **Common Use Cases:**
+
+* Loading web pages.
+* Communicating with REST APIs.
+* Transferring resources like images, scripts, or files.
+
+**In system design**, understanding HTTP is essential since almost every web-based system relies on it for **data exchange and interoperability**.
+
+---
+
+### **How HTTP Works**
+
+HTTP operates on a **client–server model**, where the **client** (e.g., browser, mobile app) sends a request to the **server**, and the server responds with the requested data.
+It typically runs over **TCP (port 80)** or **HTTPS (port 443)** for secure communication.
+
+
+### **Client–Server Model**
+
+1. **Client Initiates Request:**
+   The client sends an HTTP request (e.g., GET, POST) to the server.
+
+2. **Server Processes Request:**
+   The server interprets the request, fetches or generates the required resource.
+
+3. **Server Sends Response:**
+   The server returns an HTTP response containing status, headers, and data.
+
+4. **Connection Handling:**
+   Depending on configuration, the connection may close or stay open (persistent connections in HTTP/1.1+).
+
+
+### **Components of an HTTP Request**
+
+1. **Request Line:**
+   Contains the HTTP method, target URL, and version.
+   Example:
+
+   ```
+   GET /api/users HTTP/1.1
+   ```
+
+2. **Headers:**
+   Provide metadata like content type, user agent, and authorization info.
+   Example:
+
+   ```
+   Content-Type: application/json
+   Authorization: Bearer <token>
+   ```
+
+3. **Body (Optional):**
+   Contains data sent to the server (mainly in POST, PUT requests).
+   Example:
+
+   ```json
+   { "name": "Vivek", "role": "Engineer" }
+   ```
+
+
+### **Components of an HTTP Response**
+
+1. **Status Line:**
+   Includes protocol version, status code, and status message.
+   Example:
+
+   ```
+   HTTP/1.1 200 OK
+   ```
+
+2. **Headers:**
+   Provide information like content type, length, and caching rules.
+   Example:
+
+   ```
+   Content-Type: application/json
+   Cache-Control: no-cache
+   ```
+
+3. **Body:**
+   Contains the actual response data — HTML, JSON, images, etc.
+   Example:
+
+   ```json
+   { "success": true, "message": "User created" }
+   ```
+
+
+**In summary:**
+HTTP enables structured, stateless communication between clients and servers using a simple request–response model fundamental to all web systems.
+
+---
+
+### **HTTP Request–Response Cycle**
+
+The **HTTP request–response cycle** defines how a client and server exchange data over the web. It follows a predictable sequence that ensures communication and data transfer.
+
+#### **Step-by-Step Flow:**
+
+1. **URL Resolution:**
+   The client (browser or app) converts the domain name to an IP address using **DNS**.
+
+2. **Connection Establishment:**
+   The client opens a **TCP (or TLS for HTTPS)** connection with the server.
+
+3. **HTTP Request Sent:**
+   The client sends an HTTP request with method, headers, and optional body.
+   Example:
+
+   ```
+   GET /home HTTP/1.1
+   Host: example.com
+   ```
+
+4. **Server Processing:**
+   The server interprets the request, fetches or generates the necessary data or resource.
+
+5. **HTTP Response Sent:**
+   The server replies with a status code, headers, and (optionally) a body.
+   Example:
+
+   ```
+   HTTP/1.1 200 OK
+   Content-Type: text/html
+   ```
+
+6. **Client Renders Data:**
+   The client (browser/app) processes the response and renders it for the user.
+
+7. **Connection Termination (or Keep-Alive):**
+   The TCP connection is closed or kept alive for reuse in subsequent requests.
+
+---
+
+#### **Simplified Flow Diagram (Markdown)**
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: DNS Lookup & TCP Handshake
+    C->>S: HTTP Request (GET /home)
+    S->>C: HTTP Response (200 OK)
+    C->>C: Render Content
+    Note over C,S: Connection closes or stays open (Keep-Alive)
+```
+
+**Summary:**
+The HTTP cycle is a **request–response loop** built on TCP, forming the backbone of web communication between clients and servers.
+
+---
+
+### **Stateless Nature of HTTP**
+
+#### **What Does “Stateless” Mean?**
+
+HTTP is a **stateless protocol**, meaning **each request is independent** — the server does not remember any previous interactions with the client.
+Every request must include all necessary information for the server to process it.
+
+Example:
+If a user logs in and makes another request, the server doesn’t automatically know it’s the same user unless session data is provided again.
+
+
+#### **Challenges of Statelessness**
+
+1. **No Session Memory:** Server can’t recall user data between requests.
+2. **Repeated Authentication:** Each request must carry credentials or tokens.
+3. **Complex State Management:** Hard to maintain user sessions, carts, or preferences.
+4. **Increased Data Transfer:** Each request carries more metadata (like headers, tokens).
+
+
+#### **How Do We Handle State**
+
+To overcome statelessness, systems use **external mechanisms** to maintain user or session data:
+
+* **Cookies:** Stored in the browser and sent automatically with each request.
+* **Sessions:** Server stores session data (identified by a session ID in cookies).
+* **Tokens (JWTs):** Client includes tokens in headers for stateless authentication.
+* **Caching / Databases:** Persistent stores used for user or application state.
+
+
+**In short:**
+HTTP’s stateless nature simplifies scalability but requires **external state management** for personalized and consistent user experiences.
+
+------
+
+### **HTTP Methods**
+
+HTTP methods define the **type of action** the client wants the server to perform on a resource. They are also called **HTTP verbs**.
+
+#### **1. GET**
+
+* **Purpose:** Retrieve data from the server.
+* **Characteristics:**
+
+  * No request body.
+  * Should not modify data (idempotent).
+* **Example:**
+
+  ```
+  GET /users/123
+  ```
+
+---
+
+#### **2. POST**
+
+* **Purpose:** Send data to the server to **create** a new resource.
+* **Characteristics:**
+
+  * Includes a request body.
+  * Non-idempotent (can create duplicates if repeated).
+* **Example:**
+
+  ```
+  POST /users
+  Body: { "name": "Vivek" }
+  ```
+
+---
+
+#### **3. PUT**
+
+* **Purpose:** **Update** or **replace** an existing resource completely.
+* **Characteristics:**
+
+  * Idempotent (same result on multiple calls).
+  * Includes a request body.
+* **Example:**
+
+  ```
+  PUT /users/123
+  Body: { "name": "Vivek Panchal" }
+  ```
+
+---
+
+#### **4. PATCH**
+
+* **Purpose:** **Partially update** an existing resource.
+* **Characteristics:**
+
+  * Only modifies provided fields.
+  * Not necessarily idempotent.
+* **Example:**
+
+  ```
+  PATCH /users/123
+  Body: { "email": "vivek@example.com" }
+  ```
+
+---
+
+#### **5. DELETE**
+
+* **Purpose:** **Remove** a resource from the server.
+* **Characteristics:**
+
+  * Idempotent.
+  * Usually has no body.
+* **Example:**
+
+  ```
+  DELETE /users/123
+  ```
+
+---
+
+#### **6. HEAD**
+
+* **Purpose:** Retrieve **headers only** (no body) for a resource.
+* **Use Case:** Check if a resource exists or get metadata.
+
+---
+
+#### **7. OPTIONS**
+
+* **Purpose:** Describe **supported HTTP methods** for a resource.
+* **Use Case:** Used in **CORS preflight requests**.
+
+---
+
+**Summary Table**
+
+| Method  | Action       | Idempotent | Request Body | Typical Use         |
+| :------ | :----------- | :--------- | :----------- | :------------------ |
+| GET     | Read         | ✅          | ❌            | Fetch data          |
+| POST    | Create       | ❌          | ✅            | Create new data     |
+| PUT     | Replace      | ✅          | ✅            | Full update         |
+| PATCH   | Modify       | ❌          | ✅            | Partial update      |
+| DELETE  | Remove       | ✅          | ❌            | Delete resource     |
+| HEAD    | Headers only | ✅          | ❌            | Check existence     |
+| OPTIONS | Capabilities | ✅          | ❌            | CORS, introspection |
+
+---
+
+### **HTTP Status Codes**
+
+HTTP status codes are **3-digit numbers** sent by the server to indicate the **result** of a client’s request.
+They are grouped into five main categories based on their first digit.
+
+
+#### **1. 1xx – Informational**
+
+Indicate that the request is received and being processed.
+
+* **100 Continue:** Request headers are accepted; client can send body.
+* **101 Switching Protocols:** Server is switching protocols (e.g., HTTP to WebSocket).
+
+
+
+#### **2. 2xx – Success**
+
+The request was successfully received, understood, and processed.
+
+* **200 OK:** Request succeeded (common for GET).
+* **201 Created:** New resource successfully created (for POST).
+* **202 Accepted:** Request accepted for processing, but not yet completed.
+* **204 No Content:** Request successful but no data to return (for DELETE).
+
+
+#### **3. 3xx – Redirection**
+
+Client must take further action to complete the request.
+
+* **301 Moved Permanently:** Resource has a new permanent URL.
+* **302 Found:** Temporary redirection.
+* **304 Not Modified:** Resource not changed; use cached version.
+
+
+#### **4. 4xx – Client Errors**
+
+The request contains bad syntax or cannot be fulfilled.
+
+* **400 Bad Request:** Malformed request or invalid data.
+* **401 Unauthorized:** Authentication required or failed.
+* **403 Forbidden:** Client authenticated but not allowed access.
+* **404 Not Found:** Requested resource not found.
+* **409 Conflict:** Request conflicts with current server state.
+* **429 Too Many Requests:** Rate limit exceeded.
+
+
+#### **5. 5xx – Server Errors**
+
+Server failed to fulfill a valid request.
+
+* **500 Internal Server Error:** Generic server-side failure.
+* **502 Bad Gateway:** Invalid response from an upstream server.
+* **503 Service Unavailable:** Server temporarily overloaded or down.
+* **504 Gateway Timeout:** Upstream server didn’t respond in time.
+
+
+**In summary:**
+HTTP status codes provide a **standardized way** for the server to communicate request outcomes — helping clients handle errors, retries, and user feedback effectively.
+
+---
+
+### **What is HTTPS?**
+
+**HTTPS (HyperText Transfer Protocol Secure)** is the **secure version of HTTP**, where all data exchanged between the client and server is **encrypted** using **TLS (Transport Layer Security)**.
+
+It ensures that communication over the web is **private, authenticated, and tamper-proof**.
+
+
+
+#### **How HTTPS Works**
+
+1. **TLS Handshake:**
+   Before any data exchange, the client and server establish a secure channel by:
+
+   * Exchanging cryptographic keys.
+   * Authenticating the server’s identity using an **SSL/TLS certificate**.
+   * Agreeing on encryption algorithms.
+
+2. **Encrypted Communication:**
+   Once the handshake completes, all HTTP requests and responses are transmitted in encrypted form.
+
+3. **Data Integrity:**
+   Ensures data isn’t modified or intercepted during transfer (prevents man-in-the-middle attacks).
+
+
+#### **Key Benefits**
+
+* **Encryption:** Protects sensitive data like passwords and API tokens.
+* **Authentication:** Confirms the identity of the server (and optionally, the client).
+* **Integrity:** Prevents data tampering during transmission.
+* **SEO & Trust:** Browsers mark non-HTTPS sites as “Not Secure,” and search engines prefer HTTPS.
+
+
+#### **Ports Used**
+
+* **HTTP:** Port 80
+* **HTTPS:** Port 443
+
+
+**In system design**, HTTPS is a **non-negotiable standard** for all modern web systems — critical for security, compliance, and user trust.
+
+---
+## REST & RESTfulness - API Design Principle 
+
+### **What is REST?**
+
+**REST (Representational State Transfer)** is an **architectural style** for designing networked applications, primarily web APIs.
+It defines a set of **constraints** that make systems **scalable, stateless, and easy to maintain**.
+
+
+#### **Core Concept**
+
+In REST, clients interact with **resources** (like users, products, or posts) through **standard HTTP methods** such as `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`.
+Each resource is identified by a unique **URI (Uniform Resource Identifier)**.
+
+Example:
+
+```
+GET /users/123
+```
+
+retrieves information about user `123`.
+
+
+#### **Key Principles of REST**
+
+1. **Client–Server Separation:**
+   Client and server are independent; clients handle UI, servers handle data.
+
+2. **Statelessness:**
+   Each request contains all necessary information; the server doesn’t store client context.
+
+3. **Uniform Interface:**
+   Standardized resource access using consistent HTTP methods and URIs.
+
+4. **Resource Representation:**
+   Resources can be represented in multiple formats (usually JSON or XML).
+
+5. **Cacheable:**
+   Responses can be cached to improve performance and scalability.
+
+6. **Layered System:**
+   Intermediaries (like proxies, gateways, CDNs) can exist between client and server without affecting communication.
+
+
+**In essence:**
+REST provides a **simple, scalable, and standardized** way to design APIs using existing web protocols — making it the foundation of most modern web services.
+
+---
+
+
+### **Why REST Matters and Why It’s Widely Used in Modern Web Applications**
+
+#### **1. Simplicity and Standardization**
+
+REST uses **standard HTTP methods and status codes**, making APIs easy to design, use, and debug.
+No additional protocol is required — it works seamlessly over the existing web infrastructure.
+
+
+#### **2. Scalability**
+
+Because REST is **stateless**, servers don’t maintain client context.
+This allows easy **horizontal scaling** — multiple servers can handle requests independently.
+
+
+#### **3. Flexibility and Portability**
+
+Clients and servers are **loosely coupled**, so either side can evolve independently.
+REST APIs can be consumed by browsers, mobile apps, IoT devices, or microservices.
+
+
+#### **4. Performance Through Caching**
+
+REST supports **HTTP caching** mechanisms (like `ETag`, `Cache-Control`) to reduce redundant requests and improve speed.
+
+
+#### **5. Wide Adoption and Tooling**
+
+Most frameworks, libraries, and platforms have built-in support for REST — making development, monitoring, and integration straightforward.
+
+
+#### **6. Compatibility with Web Architecture**
+
+REST aligns naturally with the **HTTP ecosystem** — URLs, headers, and responses — making it ideal for building modern distributed systems.
+
+
+**In summary:**
+REST’s **simplicity, scalability, and interoperability** make it the **default choice** for web APIs and microservices in modern applications.
+
+---
+
+### **REST Constraints (Core Principles of REST Architecture)**
+
+REST (Representational State Transfer) isn’t just about using HTTP — it’s defined by a set of **architectural constraints**.
+If an API follows these constraints, it is considered **RESTful**.
+
+Here are the **6 core REST constraints** 👇
+
+
+### **1. Client–Server Architecture**
+
+* The client (frontend) and server (backend) are **separate** and **independent**.
+* The client is responsible for the **user interface** and user experience.
+* The server handles **data storage, business logic, and processing**.
+* ✅ **Benefit:** Improves scalability, flexibility, and allows independent evolution of client and server.
+
+
+### **2. Statelessness**
+
+* Each HTTP request from the client to the server **must contain all information** needed to process it.
+* The server does **not store any session state** about the client between requests.
+* ✅ **Benefit:** Simpler design, easier scalability, and fault tolerance.
+* ⚠️ **Challenge:** Client must manage state (e.g., authentication tokens, shopping carts).
+
+
+### **3. Cacheability**
+
+* Responses from the server should **explicitly define whether they are cacheable or not** (using HTTP headers like `Cache-Control` or `ETag`).
+* Proper caching can **improve performance** and **reduce server load**.
+* ✅ **Benefit:** Faster response times and better efficiency.
+
+
+### **4. Uniform Interface**
+
+This is the **core idea** that makes REST unique.
+It defines a **standard way** for clients and servers to communicate, regardless of implementation.
+
+It includes four key rules:
+
+1. **Resource Identification** – Every resource (user, product, post, etc.) is identified by a **URI** (e.g., `/users/101`).
+2. **Resource Manipulation via Representations** – Clients interact with resources through **representations** (usually JSON or XML).
+3. **Self-descriptive Messages** – Each message includes enough information to describe how to process it (headers, content type, etc.).
+4. **HATEOAS (Hypermedia as the Engine of Application State)** – Clients should navigate the API dynamically using **hyperlinks** in responses (not always strictly followed in real-world APIs).
+
+✅ **Benefit:** Decouples client and server — making APIs predictable and easy to understand.
+
+### **5. Layered System**
+
+* REST APIs can have **multiple layers** (e.g., load balancers, caches, security gateways) between client and server.
+* The client doesn’t need to know which server actually handles its request.
+* ✅ **Benefit:** Increases scalability, security, and flexibility.
+
+
+### **6. Code on Demand (Optional)**
+
+* Servers can temporarily **extend or customize client functionality** by transferring executable code (e.g., JavaScript).
+* This is **optional** and rarely used in most REST APIs.
+
+✅ **Benefit:** Adds flexibility.
+⚠️ **Trade-off:** Can reduce visibility and debugging simplicity.
+
+
+### ✅ **Summary Table**
+
+| # | Constraint        | Description                | Benefit                      |
+| - | ----------------- | -------------------------- | ---------------------------- |
+| 1 | Client–Server     | Separation of UI and data  | Scalability, flexibility     |
+| 2 | Stateless         | No session on server       | Easy scaling, simpler design |
+| 3 | Cacheable         | Define cache policies      | Faster performance           |
+| 4 | Uniform Interface | Standardized communication | Predictable, decoupled       |
+| 5 | Layered System    | Multi-tier architecture    | Scalability, security        |
+| 6 | Code on Demand    | Send executable code       | Optional flexibility         |
+
+---
+### **RESTful API Design Principles**
+
+RESTful APIs follow a set of best practices that make them scalable, reliable, and easy to use. These principles ensure consistency, simplicity, and performance in web service communication.
+
+
+#### **1. Use Nouns, Not Verbs, in URLs**
+
+* Endpoints should represent **resources** (nouns), not actions.
+* ✅ Example:
+
+  ```
+  GET /users/123
+  POST /users
+  DELETE /users/123
+  ```
+* ❌ Avoid:
+
+  ```
+  GET /getUser
+  POST /createUser
+  ```
+
+
+#### **2. Use HTTP Methods Correctly**
+
+* **GET** – Retrieve data
+* **POST** – Create new resource
+* **PUT/PATCH** – Update existing resource
+* **DELETE** – Remove resource
+
+Each method should serve its semantic purpose consistently.
+
+
+#### **3. Use Proper HTTP Status Codes**
+
+* **200 OK** – Request successful
+* **201 Created** – Resource created
+* **400 Bad Request** – Invalid request
+* **401 Unauthorized / 403 Forbidden** – Access denied
+* **404 Not Found** – Resource doesn’t exist
+* **500 Internal Server Error** – Server-side issue
+
+
+#### **4. Use Resource Nesting Wisely**
+
+* Keep resource hierarchy logical and shallow.
+  Example:
+
+  ```
+  GET /users/123/orders
+  GET /users/123/orders/456
+  ```
+
+Avoid deep nesting like:
+
+```
+/users/123/orders/456/items/789/payments/456
+```
+
+
+#### **5. Version Your API**
+
+* Maintain backward compatibility and smooth upgrades.
+  Example:
+
+  ```
+  /api/v1/users
+  /api/v2/users
+  ```
+
+
+#### **6. Provide Filtering, Sorting, and Pagination**
+
+* Help clients fetch only required data.
+  Example:
+
+  ```
+  GET /users?limit=10&page=2&sort=name&role=admin
+  ```
+
+
+#### **7. Use Consistent Naming Conventions**
+
+* Use **lowercase** and **plural nouns** for resources.
+  Example: `/products`, `/users`, `/orders`
+
+
+#### **8. Statelessness**
+
+* Each API call must contain all the data needed to process the request.
+* Server does not store session information.
+
+
+#### **9. Use JSON (or similar) for Data Exchange**
+
+* JSON is lightweight and widely supported.
+* Response example:
+
+  ```json
+  {
+    "id": 123,
+    "name": "Vivek",
+    "role": "admin"
+  }
+  ```
+
+
+#### **10. Provide Meaningful Error Messages**
+
+* Include error code, message, and details for debugging.
+
+  ```json
+  {
+    "error": "InvalidRequest",
+    "message": "Email field is required"
+  }
+  ```
+
+
+#### **11. Security Best Practices**
+
+* Use HTTPS for encryption.
+* Implement authentication (JWT, OAuth2).
+* Validate all inputs.
+
+
+#### **12. HATEOAS (Optional Advanced Principle)**
+
+* Include links to related actions or resources within responses.
+
+  ```json
+  {
+    "userId": 123,
+    "name": "Vivek",
+    "links": [
+      { "rel": "orders", "href": "/users/123/orders" }
+    ]
+  }
+  ```
+
+
