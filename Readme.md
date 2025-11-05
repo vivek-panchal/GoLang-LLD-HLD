@@ -1259,3 +1259,214 @@ Avoid an API Gateway if it adds unnecessary complexity or latency for your use c
 * **Avoid** it when **simplicity and low latency** are higher priorities than centralized control.
 
 ---
+
+## Content Delivery Networks (CDN) in System Design
+
+### **Introduction to CDN**
+
+A **Content Delivery Network (CDN)** is a globally distributed network of servers that deliver web content (like images, videos, scripts, and static files) to users based on their geographic location.
+
+
+### **Definition**
+
+A **CDN** is a system of **edge servers** placed across various regions that **cache and serve content** from the nearest server to the user, improving speed and reliability.
+
+### **Why CDN Exists**
+
+CDNs exist to **reduce latency**, **improve content delivery speed**, **enhance availability**, and **reduce server load** by bringing content physically closer to end-users.
+
+**In short:** CDNs make websites **faster, scalable, and more reliable** worldwide.
+
+---
+
+### **Why CDN is Needed**
+
+CDNs are needed to **enhance performance, scalability, and reliability** of content delivery. They help deliver data faster to users regardless of their location by caching content on geographically distributed servers.
+
+---
+
+### **Problems Without CDN**
+
+1. **High Latency:** Users far from the origin server experience slow loading times.
+2. **Server Overload:** A single origin server must handle all requests, leading to slowdowns or crashes under high traffic.
+3. **Poor Global Performance:** Websites perform inconsistently across regions.
+4. **Bandwidth Bottlenecks:** Increased network congestion and higher data transfer costs.
+5. **Low Availability:** Outages at the origin server can make the entire site inaccessible.
+
+**In essence:** Without a CDN, performance drops, costs rise, and reliability suffers.
+
+---
+
+### **CDN Architecture Overview**
+
+A **Content Delivery Network (CDN)** is a globally distributed system of servers designed to deliver web content efficiently and reliably. Its architecture consists of several key components that work together to reduce latency and improve user experience.
+
+#### **Key Components:**
+
+1. **Origin Server:**
+   The main server where the original content (e.g., images, videos, HTML files) is stored.
+
+2. **Edge Servers (PoPs – Points of Presence):**
+   Servers located in multiple geographic locations that cache and serve content closer to end users.
+
+3. **CDN Management Layer:**
+   Handles routing, load balancing, and cache invalidation between origin and edge servers.
+
+4. **DNS and Request Routing System:**
+   Directs user requests to the nearest or most optimal edge server using techniques like **GeoDNS** or **Anycast**.
+
+5. **Caching Mechanism:**
+   Stores frequently requested content at the edge to minimize repeated requests to the origin.
+
+#### **How It Works:**
+
+1. User requests content (e.g., a webpage or image).
+2. The DNS routes the request to the nearest edge server.
+3. If the edge has cached content, it’s delivered immediately.
+4. If not, the edge fetches it from the origin, caches it, and serves it to the user.
+
+This distributed approach ensures **low latency, high availability, and faster content delivery** across the globe.
+
+---
+
+### **How CDN Cache Content**
+
+A **CDN caches content** by storing copies of static and dynamic assets on **edge servers** located close to users. This helps reduce latency and server load.
+
+#### **Caching Process:**
+
+1. **User Request:**
+   When a user requests a resource (e.g., image, CSS, video), the request first goes to the nearest CDN edge server.
+
+2. **Cache Lookup:**
+   The edge server checks if the requested content is already stored (cached) locally.
+
+3. **Cache Hit:**
+   If found, the edge server directly serves the cached content to the user — fast and efficient.
+
+4. **Cache Miss:**
+   If not found, the edge requests the content from the **origin server**, stores it temporarily (based on caching rules), and then serves it to the user.
+
+#### **Caching Control Mechanisms:**
+
+* **HTTP Headers:** `Cache-Control`, `Expires`, and `ETag` headers define how long content stays cached.
+* **Time-to-Live (TTL):** Specifies how long the cached item remains valid before revalidation.
+* **Cache Invalidation:** Allows removing or updating outdated content manually or automatically.
+
+By intelligently caching content, CDNs reduce **latency**, **bandwidth costs**, and **load** on origin servers.
+
+---
+
+### **Load Balancing, Failover Handling, and Request Routing in CDN**
+
+#### **1. Load Balancing**
+
+CDNs distribute incoming user requests across multiple **edge servers** to avoid overloading any single node.
+
+* **Goal:** Optimize performance and ensure efficient resource usage.
+* **Methods Used:**
+
+  * **DNS-based load balancing** – directs users to the nearest or least-loaded server.
+  * **Anycast routing** – routes requests to the geographically closest server.
+  * **Health checks** – ensure only active servers receive traffic.
+
+#### **2. Failover Handling**
+
+If an edge server or data center goes down, the CDN automatically redirects traffic to the next healthy and available node.
+
+* **Mechanisms:**
+
+  * Continuous **health monitoring** of nodes.
+  * **Automatic rerouting** during outages or degradation.
+  * **Multi-origin support** for redundancy.
+
+#### **3. Request Routing**
+
+Determines **which edge server** handles a specific user request based on various factors:
+
+* **Geolocation:** Route to nearest edge server to reduce latency.
+* **Server Load:** Send requests to least-busy nodes.
+* **Network Conditions:** Reroute dynamically based on congestion or outages.
+
+Together, these mechanisms ensure **high availability, minimal latency, and fault tolerance** in a CDN-powered system.
+
+---
+
+### **Compression & Minification**
+
+#### **Compression**
+
+Compression reduces the **size of files** transferred between servers and clients, improving load time and reducing bandwidth usage.
+
+**Common Techniques:**
+
+* **Gzip / Brotli:** Compress text-based assets like HTML, CSS, JS before transmission.
+* **Image Compression:** Tools like WebP or AVIF reduce image size without major quality loss.
+* **Video Compression:** Codecs like H.264, H.265 (HEVC) for efficient media delivery.
+
+**Benefits:**
+
+* Faster content delivery.
+* Lower bandwidth consumption.
+* Improved user experience.
+
+---
+
+#### **Minification**
+
+Minification removes **unnecessary characters** (spaces, comments, line breaks) from code files without changing functionality.
+
+**Techniques & Tools:**
+
+* **CSS/JS Minifiers:** Tools like UglifyJS, Terser, CSSNano.
+* **HTML Minifiers:** Reduce response size by stripping redundant markup.
+
+**Benefits:**
+
+* Smaller file size.
+* Faster parsing and execution by browsers.
+
+**In CDN systems**, compression and minification are key optimization steps before caching or serving content to enhance overall performance and scalability.
+
+---
+
+### **Use Cases of CDN**
+
+#### **1. Static vs Dynamic Content Delivery**
+
+* **Static Content:**
+  Includes files that don’t change often — images, CSS, JS, fonts, videos.
+
+  * Cached and served directly from CDN edge servers.
+  * Example: Serving website assets or media files globally.
+
+* **Dynamic Content:**
+  Data generated in real-time (e.g., personalized dashboards, API responses).
+
+  * CDNs optimize routing and use **TCP/UDP optimizations** to accelerate delivery.
+  * Can use **edge caching** for partial or short-term storage.
+
+**Key Point:**
+Static content is heavily cached, while dynamic content relies on optimized routing and edge acceleration.
+
+
+#### **2. API Acceleration & Edge Computing (CDNs for APIs)**
+
+Modern CDNs are not just for websites — they also accelerate **API traffic** and enable **edge computing**.
+
+* **API Acceleration:**
+
+  * Reduces latency for REST and GraphQL APIs by caching responses close to users.
+  * Uses **smart routing**, **connection reuse**, and **HTTP/2 multiplexing**.
+  * Example: Speeding up e-commerce or authentication APIs.
+
+* **Edge Computing:**
+
+  * Executes lightweight logic (e.g., authentication, request validation, personalization) directly on CDN edge servers.
+  * Reduces round trips to origin servers.
+  * Platforms like **Cloudflare Workers** and **Akamai EdgeWorkers** enable this.
+
+**Result:**
+APIs become faster, more reliable, and scalable — improving end-user experience and backend efficiency.
+
+---
