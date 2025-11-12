@@ -1,4 +1,5 @@
 # Fundamentals of System Design 
+Youtube Playlist Link :- https://youtube.com/playlist?list=PLNzPfhXM567Rv1GAnHgVslVfTsjBstuph&si=R3TXcs0F_IW0vclS 
 
 ---
 
