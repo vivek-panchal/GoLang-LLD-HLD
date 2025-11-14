@@ -4753,5 +4753,102 @@ Traditional relational databases (RDBMS) and file systems struggle because:
 
 Big Data represents the **shift from single-server systems to distributed architectures**, built for **scalability, speed, and flexibility**.
 It powers analytics, AI, and decision-making in modern large-scale applications.
+---
+
+## System Performance
+
+### **Introduction to System Performance**
+
+System performance refers to how efficiently a system handles requests, processes data, and responds to users under different workloads. In system design, performance ensures that applications remain fast, stable, and reliable as they scale.
+
+
+### **What is Performance in System Design?**
+
+Performance measures how well a system meets expected speed, efficiency, and reliability goals.
+Key areas include:
+
+* Response speed
+* Ability to handle load
+* Resource utilization
+* Consistency under peak traffic
+
+
+### **Latency vs Throughput**
+
+* **Latency**: Time taken to process a single request (speed per request).
+* **Throughput**: Number of requests the system can process per second (overall capacity).
+
+High throughput does not always mean low latency.
+
+
+### **Scalability vs Responsiveness**
+
+* **Scalability**: Ability of a system to handle increased load by adding more resources.
+* **Responsiveness**: How quickly a system reacts to user requests.
+
+A system can scale well but still be slow if poorly designed; both must be balanced.
+
+
+### **Measuring Performance (SLA, SLO, SLI)**
+
+#### **Service-Level Agreement (SLA)**
+
+A formal contract defining expected performance guarantees (e.g., 99.9% uptime).
+
+#### **Service-Level Objective (SLO)**
+
+Internal target or goal that the team aims to meet (e.g., 200ms response time).
+
+#### **Service-Level Indicator (SLI)**
+
+Actual measured metrics from the system (e.g., current availability = 99.93%).
+
+
+### **Understanding Percentiles**
+
+Percentiles show how performance varies across many requests.
+Common examples:
+
+* **P50**: Median response time
+* **P90 / P95**: Slowest 10% / 5%
+* **P99**: Worst 1% — critical for user experience
+
+Percentiles reveal tail latency, not visible in averages.
+
+
+### **Why Performance Matters in Modern Applications?**
+
+* Users expect instant responses.
+* Directly affects engagement, retention, conversions.
+* Essential for real-time systems like trading, gaming, and messaging.
+* Impacts cloud cost and infrastructure planning.
+* Determines reliability during peak traffic.
+
+
+### **Performance Testing Overview**
+
+Types of performance tests include:
+
+* **Load testing** — normal expected load
+* **Stress testing** — extreme load
+* **Spike testing** — sudden traffic bursts
+* **Endurance testing** — long-running workloads
+
+Goal: identify bottlenecks before production.
+
+
+### **Introduction to Performance Monitoring**
+
+Performance monitoring helps track system health in real time using metrics such as:
+
+* CPU, memory, disk I/O
+* Request latency
+* Error rates
+* Throughput
+* Network usage
+
+Tools: Prometheus, Grafana, Datadog, New Relic.
+
+Monitoring ensures early detection of issues and stable system behavior.
 
 
