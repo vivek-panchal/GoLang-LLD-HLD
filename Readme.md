@@ -5154,3 +5154,147 @@ Different web servers handle concurrency differently:
 
 ---
 
+## Database Performance Optimization Techniques
+
+
+### **Replication**
+
+Replication means copying data across multiple database servers.
+
+#### Benefits
+
+* Improves **read performance** (read from replicas)
+* Provides **high availability**
+* Enables **failover** during primary DB failure
+
+#### Types
+
+* **Leader–Follower (Master–Slave)**
+* **Multi-leader**
+* **Leaderless (like DynamoDB)**
+
+
+### **Sharding and Partitioning Strategies**
+
+Sharding splits large datasets across multiple servers to improve scalability.
+
+#### Common Strategies
+
+* **Range-based**: Based on value ranges (e.g., dates, IDs)
+* **Hash-based**: Hash function distributes keys uniformly
+* **Geo/Zone-based**: Partition by region
+* **Directory-based**: Metadata service decides shard placement
+
+#### Benefits
+
+* Distributes load
+* Reduces hot spots
+* Allows horizontal scaling
+
+
+### **CAP Theorem**
+
+In distributed systems, you can choose **only two** at a time:
+
+* **Consistency**: All nodes see the same data
+* **Availability**: System responds even if some nodes fail
+* **Partition Tolerance**: System continues during network splits
+
+#### System Types
+
+* **CP**: Prioritize consistency (e.g., HBase)
+* **AP**: Prioritize availability (e.g., Cassandra)
+* **CA**: Rare in distributed systems
+
+
+## **Indexes: Types & Use Cases**
+
+Indexes improve query speed by avoiding full table scans.
+
+#### Types
+
+* **B-Tree Index**: General queries, range queries
+* **Hash Index**: Fast equality lookups
+* **Full-Text Index**: Searching text fields
+* **Composite Index**: Multi-column queries
+* **Inverted Index**: Used in search engines
+
+#### Use Cases
+
+* WHERE conditions
+* JOIN performance
+* Sorting (ORDER BY)
+* Avoid full scans on large tables
+
+
+### **Normalization vs Denormalization — When to Use Each**
+
+#### **Normalization**
+
+Organizing data into relational tables to reduce redundancy.
+**Use When:**
+
+* Data integrity is critical
+* Write-heavy systems
+* Avoid anomalies (update, insert, delete)
+
+#### **Denormalization**
+
+Combining tables for faster reads.
+**Use When:**
+
+* Read-heavy workloads
+* Analytics, dashboards
+* Need fewer JOINs in high-traffic systems
+* Caching aggregated data
+
+
+### **Additional Techniques**
+
+### **1. Connection Pooling**
+
+Reuses existing DB connections instead of opening new ones.
+**Benefits:**
+
+* Reduces connection overhead
+* Improves throughput
+* Prevents DB overload
+
+#### **2. Query Optimization**
+
+* Avoid SELECT *
+* Use proper indexes
+* Rewrite inefficient JOINs
+* Limit result size
+* Analyze slow queries (EXPLAIN, query planner)
+
+#### **3. Materialized Views**
+
+Precomputed, stored query results.
+**Use Case:**
+
+* Analytics and dashboards
+* Expensive aggregations (SUM, COUNT, GROUP BY)
+* Reducing load in read-heavy systems
+
+#### **4. Batching**
+
+Send multiple operations in one request (insert/update).
+**Benefits:**
+
+* Fewer network calls
+* Better throughput
+  **Use Case:**
+* Logging events
+* Bulk inserts
+
+#### **5. Pagination**
+
+Load results in chunks.
+**Benefits:**
+
+* Avoids loading millions of rows
+* Reduces memory usage
+  **Techniques:**
+* OFFSET/LIMIT
+* Keyset pagination (better for large datasets)
