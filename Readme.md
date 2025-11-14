@@ -5045,3 +5045,112 @@ Use queues when you need:
 
 ---
 
+## Concurrency and Parallelism
+
+
+### **What Is Concurrency?**
+
+Concurrency is the ability of a system to **handle multiple tasks at the same time** by switching between them.
+Tasks *appear* to run simultaneously even if executed on a single CPU core.
+It’s about **managing multiple tasks**, not executing them at the same moment.
+
+
+### **What Is Parallelism?**
+
+Parallelism means **executing multiple tasks simultaneously** using multiple CPU cores.
+It’s about **actual simultaneous execution**, not interleaving.
+
+**In short:**
+
+* **Concurrency** → dealing with many tasks
+* **Parallelism** → doing many tasks at the same time
+
+
+### **Processes and Threads**
+
+#### **Process**
+
+* Independent execution unit
+* Has its own memory space
+* Heavyweight
+
+#### **Thread**
+
+* Lightweight execution unit inside a process
+* Shares memory with other threads
+* Communication is easier but needs synchronization
+
+
+### **Thread Pool & Worker Model**
+
+Instead of creating a thread per request, systems use a **thread pool**:
+
+* Pre-created threads wait for tasks
+* Tasks are distributed to available workers
+* Improves performance, avoids overhead, prevents crashing under load
+
+Used in: Node.js worker threads, Java ExecutorService, Python concurrent.futures, Nginx worker model.
+
+
+### **Asynchronous Processing**
+
+Async systems free the thread while waiting for I/O operations like:
+
+* Network calls
+* Database operations
+* File reads
+
+This improves scalability because threads do not block unnecessarily.
+
+Examples:
+
+* Node.js async I/O
+* Python async/await
+* Java CompletableFuture
+
+
+
+### **Concurrency in Web Servers**
+
+Different web servers handle concurrency differently:
+
+* **Thread-per-request model** (Tomcat, Spring)
+  Each request gets its own thread.
+* **Event-driven model** (Node.js, Nginx)
+  One thread handles many requests using async callbacks.
+* **Hybrid worker model** (FastAPI + Uvicorn, Go net/http)
+  Mix of concurrency primitives like goroutines, green threads, or event loops.
+
+
+### **Common Pitfalls**
+
+* Race conditions (multiple threads modifying shared data)
+* Deadlocks (threads waiting on each other forever)
+* Starvation (a task never gets resources)
+* Shared memory corruption
+* Too many threads causing context-switch overhead
+* Improper locking reducing performance
+
+
+### **Best Practices & Real World Examples**
+
+#### Best Practices
+
+* Use **locks** only when necessary
+* Prefer **immutable data structures**
+* Use **thread pools**, not unlimited threads
+* Keep tasks **small and stateless**
+* Avoid sharing data unnecessarily
+* Use **idempotent consumers** in distributed systems
+* Apply **timeouts** and **circuit breakers**
+
+#### Real-World Examples
+
+* **Web servers** handling thousands of concurrent users
+* **Workers** processing tasks from message queues
+* **Database connection pools** shared across threads
+* **Kafka consumers** running in parallel partitions
+* **Go goroutines** serving microservices at scale
+
+---
+
