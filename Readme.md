@@ -4851,4 +4851,77 @@ Tools: Prometheus, Grafana, Datadog, New Relic.
 
 Monitoring ensures early detection of issues and stable system behavior.
 
+---
 
+## Caching for Speed Optimization
+
+
+### **Why Caching Matters**
+
+Caching improves performance by storing frequently accessed data closer to the user or application, reducing:
+
+* Latency
+* Load on databases
+* Network round trips
+* Overall infrastructure cost
+
+It helps systems scale efficiently while delivering faster responses.
+
+
+### **Types of Caching**
+
+* **Client-side caching** (browser, mobile app)
+* **CDN caching** (edge caching of static assets)
+* **Application-level caching** (in-memory like Redis, Memcached)
+* **Database caching** (query caching, materialized views)
+* **Distributed caching** (shared cache across multiple servers)
+
+
+### **Caching Strategies**
+
+* **Read-through**
+  Cache sits in front of DB; data is fetched and stored automatically.
+* **Write-through**
+  Writes go to cache and DB simultaneously.
+* **Write-back / Write-behind**
+  Writes go to cache first, DB updated asynchronously.
+* **Cache-aside (Lazy loading)**
+  Application checks cache first; if miss → fetch from DB and store.
+
+
+### **Caching Eviction Policies**
+
+Used when cache is full and data must be removed:
+
+* **LRU** (Least Recently Used)
+* **LFU** (Least Frequently Used)
+* **FIFO** (First In First Out)
+* **Random eviction**
+* **TTL-based eviction** (expire after time)
+
+
+### **Redis Overview**
+
+Redis is an in-memory, distributed key-value store known for high speed.
+Key features:
+
+* Millisecond-level latency
+* Supports data structures (strings, lists, sets, hashes, sorted sets)
+* Pub/sub messaging
+* Persistence modes (RDB, AOF)
+* TTL support for key expiration
+* Widely used for caching, rate limiting, session storage, leaderboards
+
+
+### **Real-World Caching Applications**
+
+* **Session caching** (login sessions)
+* **Feed caching** (social media timelines)
+* **Product catalog caching** (e-commerce)
+* **API response caching**
+* **Database query caching**
+* **Leaderboard & ranking caching** (gaming)
+* **Rate limiting counters**
+* **Geolocation & configuration data caching**
+
+---
