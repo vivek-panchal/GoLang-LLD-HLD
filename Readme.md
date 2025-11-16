@@ -6009,3 +6009,392 @@ Quorums help balance:
 * **Consistency** (enough nodes must agree)
 * **Availability** (system stays online despite failures)
 
+---
+
+
+## 🔐 **Security in System Design**
+
+Security is a *non-functional requirement* but one of the most **critical aspects of scalable system design**. A system that scales but is not secure is useless.
+
+
+### ⭐ **1. Introduction to Security in System Design**
+
+Security in system design ensures that **applications, servers, networks, and data** are protected from adversaries, misuse, and failures.
+
+In distributed systems (microservices, cloud apps), multiple components interact across networks — making the attack surface larger.
+Security must be integrated **from day 1** of the architecture, not patched later.
+
+
+### ⭐ **2. Why Security Matters in System Design**
+
+Security is important because:
+
+#### ✅ **Protects sensitive data**
+
+User data, financial data, PII, tokens, passwords.
+
+#### ✅ **Prevents financial loss**
+
+DDoS, data breaches, fraud can cost millions.
+
+#### ✅ **Builds user trust**
+
+Users expect their data to be safe.
+
+#### ✅ **Ensures uptime**
+
+Attacks like DDoS and ransomware can shut down systems.
+
+#### ✅ **Compliance**
+
+GDPR, HIPAA, SOC2, PCI-DSS rules must be followed.
+
+
+### ⭐ **3. What is Security in Distributed Systems?**
+
+A distributed system has:
+
+* Multiple nodes
+* Multiple communication channels
+* Multiple storage layers
+* Shared responsibilities
+
+This makes it vulnerable to:
+
+* Network attacks
+* Service impersonation
+* Traffic interception
+* Data corruption
+* Unauthorized access
+
+**Security in distributed systems = securing every layer:**
+
+* Client layer
+* API layer
+* Network layer
+* Microservices
+* Databases
+* Caches
+* Queues
+* Storage
+* Infrastructure
+
+
+### ⭐ **4. The CIA Triad: The Core of System Security**
+
+Security is built on the **CIA Triad**:
+
+#### 🔒 **C – Confidentiality**
+
+Ensure data is accessible only to authorized users.
+**Techniques:** Encryption, Access Control, TLS.
+
+#### 🔄 **I – Integrity**
+
+Ensure data isn’t tampered with.
+**Techniques:** Hashing, Checksums, Digital signatures.
+
+#### 📦 **A – Availability**
+
+Ensure the system is always up.
+**Techniques:** Redundancy, Rate-limiting, DDoS protection.
+
+Together, these form the foundation of secure architecture.
+
+
+### ⭐ **5. Threat Modeling – Understanding Your Adversary**
+
+Threat modeling helps predict:
+
+* **Who** can attack?
+* **Why** will they attack?
+* **How** will they attack?
+
+Use the **STRIDE model**:
+
+| Threat Type | Stands For             | Example                     |
+| ----------- | ---------------------- | --------------------------- |
+| **S**       | Spoofing               | Fake login, impersonation   |
+| **T**       | Tampering              | Modify API request          |
+| **R**       | Repudiation            | Deny performing an action   |
+| **I**       | Information Disclosure | Unauthorized access         |
+| **D**       | Denial of Service      | DDoS attack                 |
+| **E**       | Elevation of Privilege | Normal user acting as admin |
+
+This helps design defenses early.
+
+
+### ⭐ **6. Common Attack Vectors in Systems**
+
+Attack vectors = ways attackers enter.
+
+* Weak authentication
+* Exposed APIs
+* Insecure cookies
+* Public S3 buckets
+* Misconfigured CORS
+* Outdated libraries
+* SQL injection points
+* No rate-limiting
+* Public admin panels
+
+
+### ⭐ **7. Common Attacks (Interview Essentials)**
+
+#### ⚡ **1. DDoS Attack**
+
+Goal: Exhaust your server resources.
+Solution: Rate limiting, CDN, WAF, load balancer.
+
+#### 🔌 **2. MITM (Man-in-the-Middle)**
+
+Attacker intercepts data in transit.
+Solution: HTTPS + TLS.
+
+#### 💉 **3. Injection Attacks (SQL/XSS/Command)**
+
+Attacker injects malicious code.
+Solution: Validation, ORM, sanitization.
+
+#### 🎭 **4. Spoofing**
+
+Fake identity, fake IP, fake tokens.
+Solution: Strong auth, signatures.
+
+
+### ⭐ **8. Security in SDLC (Secure Development Life Cycle)**
+
+Security should be part of the dev cycle:
+
+1. **Requirements:** define security needs
+2. **Design:** threat modeling, review
+3. **Implementation:** secure coding
+4. **Testing:** penetration tests, static analysis
+5. **Deployment:** infra hardening
+6. **Monitoring:** alerts, logs
+
+Tools: SonarQube, Snyk, OWASP ZAP.
+
+
+### ⭐ **9. Security Best Practices (Essential)**
+
+* Use HTTPS everywhere
+* Validate every input
+* Enforce least privilege
+* Never store passwords in plain text
+* Rotate keys/tokens
+* Use secure headers (CSP, HSTS)
+* Enable MFA for admin access
+
+
+## 🔐 **Authentication & Authorization**
+
+### ⭐ **10. Introduction**
+
+Auth is core to system security.
+
+* **Authentication** = "Who are you?"
+* **Authorization** = "What can you do?"
+
+
+### ⭐ **11. Common Authentication Methods**
+
+* Username + Password
+* OTP / MFA
+* OAuth 2.0
+* JWT
+* API Keys
+* Refresh Tokens
+
+
+### ⭐ **12. Session-Based vs Token-Based Authentication**
+
+#### 🔵 Session-Based
+
+Stored on server memory/Redis.
+Great for traditional web apps.
+
+#### 🟠 Token-Based (JWT)
+
+Stored on client side, stateless.
+Great for microservices & mobile apps.
+
+
+### ⭐ **13. Access Control Models**
+
+1. **RBAC** – Role Based
+2. **ABAC** – Attribute Based
+3. **PBAC** – Policy Based
+4. **MAC/DAC** – Mandatory/Discretionary control
+
+
+### ⭐ **14. SSO & Identity Federation**
+
+* SSO = One login for many services
+* SAML, OAuth2, OpenID Connect
+
+Used by Google Login, GitHub Login.
+
+
+## 🔐 **Data Protection & Secure Communication**
+
+### ⭐ **15. Why Data Protection Matters**
+
+To prevent:
+
+* Data breaches
+* Unauthorized access
+* Insider threats
+* Fraud
+
+
+### ⭐ **16. Encryption**
+
+Two types:
+
+* **Symmetric** (AES)
+* **Asymmetric** (RSA)
+
+
+### ⭐ **17. Encryption at Rest vs. Transit**
+
+* **At rest** = Encrypt databases, files
+* **In transit** = HTTPS, TLS
+
+
+### ⭐ **18. Hashing & Salting Passwords**
+
+Never store raw passwords.
+
+Use:
+
+* bcrypt
+* Argon2
+* PBKDF2
+
+
+### ⭐ **19. PKI (Public Key Infrastructure)**
+
+Allows secure communication using digital certificates.
+
+Used by HTTPS, API signing, JWT validation.
+
+
+### ⭐ **20. Secure API Communication**
+
+* Sign requests (HMAC)
+* Require tokens
+* Validate input/output
+* CORS restrictions
+* Use API gateways
+
+
+## 🔐 **Network & Infrastructure Security**
+
+### ⭐ **21. Why Network Security Matters**
+
+A system is only as strong as its weakest network point.
+
+
+### ⭐ **22. Firewalls & Reverse Proxy**
+
+* **Firewall:** Blocks suspicious requests
+* **Reverse Proxy:** Protects backend servers
+  (E.g., Nginx, Envoy)
+
+
+### ⭐ **23. Rate Limiting, Throttling, IP Filtering**
+
+Used to prevent:
+
+* DDoS
+* Abuse
+* Bots
+* API overload
+
+Tools: NGINX, API Gateway, Cloudflare.
+
+
+### ⭐ **24. Network Segmentation & Isolation**
+
+Separate network layers:
+
+* Public → Load Balancer → App → DB
+* Private VPC
+* Subnets
+* No DB exposure to internet
+
+
+### ⭐ **25. Zero Trust Security Model**
+
+"Trust nothing, verify everything."
+
+* Every request must be authenticated
+* Every device verified
+* No implicit trust inside network
+
+
+### ⭐ **26. Securing Cloud Environments**
+
+* IAM roles
+* VPC security groups
+* Secret managers
+* Monitoring (CloudWatch, Datadog)
+
+
+### ⭐ **27. Securing Serverless & Containers**
+
+#### Containers:
+
+* Use minimal images
+* No root user
+* Scan images
+
+#### Serverless:
+
+* Limit execution role
+* Validate input
+* Set timeout
+* Use VPC
+
+
+### ⭐ **28. Security in Microservices**
+
+Key challenges:
+
+* Many services → many attack points
+* Message queues
+* Internal APIs
+
+Solutions:
+
+* Mutual TLS
+* API Gateway
+* Service mesh (Istio/Linkerd)
+* Isolation per service
+
+
+### ⭐ **29. OWASP Top 10 (Must Know)**
+
+* Injection
+* Broken Auth
+* Sensitive Data Exposure
+* XXE
+* Access Control issues
+* Security misconfig
+* XSS
+* Insecure Deserialization
+* Using vulnerable libraries
+* Insufficient logging/monitoring
+
+### ⭐ **30. Conclusion**
+
+Security is not a feature — it’s a **mindset**.
+Design secure systems by integrating security:
+
+* At architecture level
+* At code level
+* At infra level
+* During operations
+
+
