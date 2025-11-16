@@ -5298,3 +5298,714 @@ Load results in chunks.
   **Techniques:**
 * OFFSET/LIMIT
 * Keyset pagination (better for large datasets)
+
+---
+
+## 🛡️ **Introduction to System Reliability**
+
+
+### ✅ **Why Reliability Matters?**
+
+Reliability determines **whether a system consistently works as users expect**.
+In modern systems:
+
+* Users demand near-zero downtime.
+* Businesses lose money for every second of failure (Amazon = millions/minute).
+* Reputation, trust, and customer retention heavily depend on reliability.
+* Many systems (payments, healthcare, transportation) are *mission critical*.
+
+**High reliability = better user experience, lower maintenance cost, and stable operations.**
+
+
+### 🧩 **What is System Reliability?**
+
+**System reliability** is the ability of a system to function correctly **over time**, without failures.
+
+It focuses on:
+
+* **Availability** (Is the system up and reachable?)
+* **Durability** (Does the system protect data?)
+* **Fault tolerance** (Can it survive failures?)
+* **Recoverability** (How fast can it come back?)
+
+In short:
+
+👉 *A reliable system keeps running even when things break.*
+
+
+### 📏 **Key Metrics – MTBF & MTTR**
+
+Reliability is measured by two important metrics:
+
+
+### 🕒 **MTBF – Mean Time Between Failures**
+
+* Measures **time between two failures**.
+* Higher MTBF → More reliable system.
+
+Example:
+MTBF = 1000 hours → on average, system fails once every 1000 hours.
+
+
+### 🔧 **MTTR – Mean Time To Repair**
+
+* Measures how quickly a system recovers after failure.
+* Lower MTTR → Faster recovery → Higher availability.
+
+Example:
+MTTR = 10 minutes → system comes back online in 10 minutes after a failure.
+
+
+### 📄 **What Are SLAs? (Service Level Agreements)**
+
+**SLA** is a promise made by the service provider about its reliability.
+
+Typical SLA Guarantees:
+
+* **Uptime/Availability** (ex: 99.9%, 99.99%, 99.999%)
+* **Performance** (latency/response times)
+* **Support response times**
+* **Data durability**
+
+Availability levels:
+
+| SLA     | Downtime Allowed per Year |
+| ------- | ------------------------- |
+| 99%     | ~3.65 days                |
+| 99.9%   | ~8.7 hours                |
+| 99.99%  | ~52 minutes               |
+| 99.999% | ~5 minutes                |
+
+
+### 🧍‍♂️ Availability vs Durability
+
+These two terms are often confused:
+
+
+### 🔓 **Availability**
+
+**System is accessible and working.**
+
+Example:
+If your database node crashes but a replica takes over immediately → Availability maintained.
+
+
+### 🔐 **Durability**
+
+**Data remains safe and never lost.**
+
+Example:
+Data is written to 3 replicas → even if one fails, data is still safe.
+
+
+### Quick Difference:
+
+| Availability                              | Durability                          |
+| ----------------------------------------- | ----------------------------------- |
+| System uptime                             | Data permanence                     |
+| Achieved using redundancy, load balancing | Achieved using replication, backups |
+| Temporary downtime allowed                | Data loss NOT allowed               |
+
+
+
+### 🌎 **Impact of Reliability on System Design**
+
+Reliability influences major design choices:
+
+* **Multi-region architectures**
+* **Replication strategies**
+* **Load balancing**
+* **Failover mechanisms**
+* **Eventual consistency models**
+* **Monitoring + Alerts**
+* **Retry logic, idempotency**
+
+A reliable system requires **more complexity, cost, and infrastructure**.
+
+
+### 🌐 **Reliability in Distributed Systems**
+
+#### Challenges & Solutions
+
+Distributed systems face unique reliability issues:
+
+
+#### ❌ **Challenges**
+
+* Network failures
+* Partial system failures
+* Node crashes
+* Data inconsistencies (due to CAP theorem)
+* Clock skew & distributed time
+* Split-brain scenarios
+* Difficult debugging
+
+
+#### ✅ **Solutions**
+
+| Challenge        | Solution                                       |
+| ---------------- | ---------------------------------------------- |
+| Node failures    | Replication, auto-healing                      |
+| Traffic spikes   | Autoscaling                                    |
+| Inconsistency    | Quorums, consensus (Raft, Paxos)               |
+| Slow components  | Timeouts, circuit breakers                     |
+| Routing failures | Load balancers, retries, idempotency           |
+| Data loss        | Write-ahead logs, backups, multi-region writes |
+
+
+### ☁️ **Reliability in Cloud-Native Systems**
+
+Cloud-native systems rely heavily on:
+
+* **Microservices**
+* **Containers (Docker)**
+* **Orchestration (Kubernetes)**
+* **Service meshes**
+* **Autoscaling**
+* **Self-healing infrastructure**
+
+Cloud providers offer built-in features:
+
+* Multi-zone deployment
+* Auto-restarts
+* ReplicaSets & StatefulSets
+* Managed databases with failover
+* Observability stacks (logs, metrics, traces)
+
+**Cloud-native reliability = Automation + Redundancy + Monitoring**
+
+
+### 🎯 **Summary**
+
+| Topic                              | Key Idea                                |
+| ---------------------------------- | --------------------------------------- |
+| Why reliability matters            | Prevent failures, protect business      |
+| What is system reliability         | Consistent correct behavior             |
+| MTBF                               | Time between failures                   |
+| MTTR                               | Time to recover                         |
+| SLA                                | Promised uptime/performance             |
+| Availability vs Durability         | Uptime vs Data safety                   |
+| Distributed reliability challenges | Network, partial failure, consistency   |
+| Cloud-native reliability           | Self-healing + autoscaling + redundancy |
+
+---
+
+
+### 🟩 **High Availability, Fault Tolerance & Failover — System Design Notes**
+
+
+
+### 1️⃣ **High Availability (HA)**
+
+**High Availability** means your system stays **up and accessible** almost all the time—even during failures.
+
+HA is measured using **availability %**, like:
+
+* 99% → 3.65 days downtime/year
+* 99.9% → 8.7 hours downtime
+* 99.99% → 52 minutes
+* 99.999% → 5 minutes
+
+**Goal:** Ensure services continue running despite failures by adding **redundancy + failover + monitoring**.
+
+
+### 2️⃣ **Fault Tolerance**
+
+Fault tolerance means your system **keeps working even if a component completely fails**.
+
+* A fault-tolerant system is designed so **failure of one part does NOT affect the whole system**.
+* Usually achieved using **redundant components**, e.g., multiple replicas, multi-AZ, RAID, replication, clustering.
+
+**Fault tolerance = Zero downtime during a failure.**
+
+
+### 3️⃣ **Failover**
+
+Failover is the **automatic switching** of traffic from a failed component to a healthy component.
+
+Examples:
+
+* If primary DB crashes → read replica becomes primary automatically.
+* If a server fails → load balancer sends traffic to other servers.
+
+Failover can be:
+
+* **Automatic** (most common)
+* **Manual** (rare, used in critical financial systems)
+
+
+### 4️⃣ **Redundancy and Redundancy Strategies**
+
+Redundancy = having **extra components** so that if one fails, others take over.
+
+Types of redundancy in system design:
+
+
+### 🔵 **N + 1 Redundancy**
+
+You have **N working components + 1 spare**.
+
+Example:
+
+* 3 servers handle load
+* 1 standby server
+* If one fails → spare takes over
+
+Used in: web servers, load balancers, power supplies.
+
+
+### 🟢 **Active–Active**
+
+All replicas are running **simultaneously** and handling traffic.
+
+* Load balancer distributes load across all nodes.
+* If one node fails, remaining nodes automatically take traffic.
+
+**Pros:** High throughput, continuous availability
+**Cons:** Harder consistency, conflict resolution needed (DBs especially)
+
+Used in:
+
+* Multi-region services
+* Redis Cluster
+* Cassandra, DynamoDB
+* Global load-balanced apps
+
+
+#### 🟡 **Active–Passive (Hot Standby)**
+
+One node handles traffic, the other stays **idle but ready**.
+
+Flow:
+
+1. Active node serves all requests
+2. Passive node replicates data
+3. If active fails → passive becomes active
+
+**Pros:** Simple, predictable
+**Cons:** Passive node is underutilized
+**Example:** Primary–replica DB setup
+
+
+### 5️⃣ **Graceful Degradation**
+
+When the system is overloaded or partially failing, it **continues working with reduced functionality** instead of crashing.
+
+Examples:
+
+* Instagram disables “Explore” feed during heavy load but lets users still scroll home feed.
+* Netflix reduces video quality (from 4K → HD → SD).
+* A ride-sharing app disables price history or analytics during peak traffic spikes.
+
+**Goal:** Fail partially → NOT fully.
+
+
+### 6️⃣ **High Availability Patterns in Real-World Systems**
+
+Here are the **most common HA architecture patterns** used in big tech:
+
+
+### 🟦 **Pattern 1: Multi-AZ Deployment (Cloud)**
+
+* Run app in **multiple availability zones**.
+* If AZ goes down → traffic automatically routes to another.
+
+Used by: AWS RDS Multi-AZ, Kubernetes clusters, Netflix.
+
+
+### 🟩 **Pattern 2: Load Balancer + Multiple App Servers**
+
+```
+Client → Load Balancer → Server1, Server2, Server3
+```
+
+If Server2 crashes, LB routes traffic to 1 and 3.
+
+
+
+### 🟨 **Pattern 3: Primary–Replica (Read Replicas)**
+
+* Primary handles writes
+* Multiple replicas handle reads
+* If primary fails → auto failover
+
+Used by: MySQL, PostgreSQL, MongoDB replica sets.
+
+
+### 🟧 **Pattern 4: Distributed Storage with Replication**
+
+Replicate data across:
+
+* multiple nodes
+* multiple racks
+* multiple data centers
+
+Used by: HDFS, Cassandra, S3.
+
+
+### 🟥 **Pattern 5: Circuit Breakers & Timeouts**
+
+If a downstream service fails:
+
+* stop sending requests
+* return fallback results
+* avoid cascading failures
+
+Used by: Netflix Hystrix, Spring Cloud.
+
+
+
+#### 7️⃣ **Designing for Redundancy**
+
+To design a reliable, redundant system:
+
+#### ✔ Add multiple instances of every component
+
+Servers, databases, caches, message brokers.
+
+#### ✔ Avoid single points of failure
+
+One failing component should not take down the entire system.
+
+#### ✔ Distribute traffic using load balancers
+
+Global (GSLB) + Local (internal LB).
+
+#### ✔ Replicate data
+
+In DBs, storage, caches.
+
+#### ✔ Multi-zone and multi-region deployment
+
+To survive entire data center failures.
+
+#### ✔ Add failover logic
+
+Automated promotion, heartbeat checks, retries.
+
+
+
+#### 8️⃣ **Health Monitoring and Self-Healing Systems**
+
+A system must **detect**, **recover**, and **prevent** failures automatically.
+
+
+#### 🌐 **Health Monitoring**
+
+Tools & techniques:
+
+* Heartbeat signals
+* Health check endpoints (`/health`, `/live`, `/ready`)
+* CloudWatch, Prometheus, Grafana
+* Alerting on latency, CPU, memory, error rates
+
+
+#### 🛠️ **Self-Healing**
+
+A self-healing system can fix itself:
+
+#### 🌀 Examples:
+
+* Kubernetes restarts crashed containers automatically.
+* Auto-scaling groups replace unhealthy EC2 instances.
+* Load balancer removes unhealthy nodes automatically.
+* Redis cluster automatically moves shards when nodes die.
+
+
+### 🎯 **Summary Table**
+
+| Concept              | Meaning                                      |
+| -------------------- | -------------------------------------------- |
+| High Availability    | System stays up most of the time             |
+| Fault Tolerance      | System continues working even after failures |
+| Failover             | Automatic switch to healthy component        |
+| N+1                  | Extra standby unit                           |
+| Active-Active        | All nodes active                             |
+| Active-Passive       | One active, one standby                      |
+| Graceful Degradation | Reduced functionality during failures        |
+| HA Patterns          | LB, Multi-AZ, Replication, Circuit breakers  |
+| Self-Healing         | System auto-recovers from failure            |
+
+---
+
+## 🟦 **Backup & Recovery Strategies (System Design Notes)**
+
+
+### 1️⃣ **What is Backup & Recovery?**
+
+#### **Backup**
+
+A **backup** is a copy of your data stored in a separate location so it can be restored if the original is lost or corrupted.
+
+#### **Recovery**
+
+**Recovery** is the process of **restoring data** from a backup after failure, corruption, or disaster.
+
+
+
+### 2️⃣ **Why is Backup Important?**
+
+Backups protect against:
+
+* Hardware failures
+* Human mistakes (accidental deletion)
+* Cyber attacks (ransomware, malware)
+* Natural disasters
+* Data corruption
+* Software bugs
+* Cloud region failures
+
+Without backups, **data loss = business loss**.
+
+
+
+### 3️⃣ **Types of Backup**
+
+#### 🟢 **1. Full Backup**
+
+* Complete copy of all data.
+* Slow & storage-heavy.
+* Best for weekly/monthly backups.
+
+#### 🔵 **2. Incremental Backup**
+
+* Backs up only data **changed since the last backup**.
+* Faster, lower storage.
+* Recovery is **slower**: you need all incrementals + last full backup.
+
+#### 🟡 **3. Differential Backup**
+
+* Backs up data **changed since last full backup**.
+* Larger than incremental but **faster recovery**.
+
+#### 🔴 **4. Continuous Backup (CDP)**
+
+* Real-time or near–real-time backup.
+* Used for financial systems, trading systems.
+
+
+### 4️⃣ **Recovery Types**
+
+#### 🟢 **1. File-Level Recovery**
+
+Restore individual files or folders.
+
+#### 🔵 **2. System-Level Recovery**
+
+Restore entire servers, OS images, configuration.
+
+#### 🟡 **3. Application-Level Recovery**
+
+Restore DBs, queues, caches, or application-level state.
+
+#### 🔴 **4. Disaster Recovery (DR)**
+
+Restore full system in another region or data center.
+
+Disaster recovery often includes:
+
+* **Hot site** (active-active)
+* **Warm site** (active-passive)
+* **Cold site** (infrastructure available but powered off)
+
+
+
+### 5️⃣ **Understanding RTO & RPO**
+
+#### 🟦 **RTO — Recovery Time Objective**
+
+“How fast should we recover after failure?”
+
+Examples:
+
+* RTO = 0 sec → Active-active systems
+* RTO = 15 min → Critical apps
+* RTO = 4–8 hours → Internal tools
+
+Lower RTO = more cost.
+
+
+#### 🟥 **RPO — Recovery Point Objective**
+
+“How much data loss is acceptable?”
+
+Examples:
+
+* RPO = 0 → Real-time replication
+* RPO = 1 hour → Hourly backup
+* RPO = 1 day → Daily backup
+
+Lower RPO = more frequent backups = higher cost.
+
+
+
+### 6️⃣ **Trade-offs in Backup Strategies**
+
+| Strategy     | Pros                | Cons                      |
+| ------------ | ------------------- | ------------------------- |
+| Full         | Simple to restore   | Expensive, slow           |
+| Incremental  | Fast backup, cheap  | Slow restore (many files) |
+| Differential | Faster restore      | Larger daily backups      |
+| Continuous   | Almost no data loss | High cost, complex        |
+
+Key trade-offs:
+
+* **Cost vs Frequency**
+* **Backup speed vs Recovery speed**
+* **Storage cost vs RPO/RTO**
+* **Operational complexity vs reliability**
+
+
+### 7️⃣ **Best Practices for Backup & Recovery**
+
+#### ✅ 1. Follow the **3-2-1 Backup Rule**
+
+* 3 copies of data
+* 2 different storage types
+* 1 copy offsite (e.g., cloud)
+
+#### ✅ 2. Use multi-region / multi-zone backups
+
+Avoid single point of regional failure.
+
+#### ✅ 3. Test your backups regularly
+
+A backup is useless if it cannot be restored.
+
+#### ✅ 4. Automate backups
+
+No manual steps → fewer human errors.
+
+#### ✅ 5. Encrypt backups
+
+Both at rest and in transit.
+
+#### ✅ 6. Version your backups
+
+Protect against ransomware and accidental overwrites.
+
+#### ✅ 7. Use snapshots for fast recovery
+
+* EBS snapshots
+* RDS snapshots
+* VM/Container snapshots
+
+#### ✅ 8. Monitor backup success/failure
+
+Alerts ensure backup failures are caught early.
+
+
+### 🎯 **Summary**
+
+| Concept                       | Meaning                                     |
+| ----------------------------- | ------------------------------------------- |
+| Backup                        | Copy of data stored elsewhere               |
+| Recovery                      | Restoring data after failure                |
+| RTO                           | How fast to recover                         |
+| RPO                           | How much data loss acceptable               |
+| Full/Incremental/Differential | Core backup strategies                      |
+| DR                            | System-wide recovery plan                   |
+| Best Practices                | 3-2-1 rule, automation, encryption, testing |
+
+---
+## **Disaster Recovery in Practice**
+
+
+### **Why Disaster Recovery Matters**
+
+Disaster Recovery (DR) ensures a system can **quickly recover** after catastrophic failures such as:
+
+* Data center outages
+* Natural disasters
+* Cloud region failures
+* Cyberattacks or ransomware
+* Human operational mistakes
+
+Without DR, systems face extended downtime, data loss, and business failure.
+
+
+### **DR for Mission-Critical Applications**
+
+Mission-critical systems (banking, payments, healthcare, e-commerce) require:
+
+* **Minimal downtime** (low RTO)
+* **Minimal data loss** (low RPO)
+* **Multi-region architectures**
+* **Continuous replication**
+* **Automated failover**
+
+These systems must remain operational **even during regional failures**.
+
+
+### **Failover + Backup = True Resilience**
+
+* **Backups** protect data (restore capability).
+* **Failover** provides continuous service availability.
+
+Both are required because:
+
+* **Backups alone** → slow recovery, possible data loss
+* **Failover alone** → corrupted/compromised data may replicate instantly
+
+A resilient system uses:
+
+* Real-time replication (for quick failover)
+* Periodic backups (for long-term recovery)
+
+
+### **Testing and Automation**
+
+Disaster recovery is reliable only when regularly validated:
+
+* Automate failover/failback scripts
+* Run Chaos/DR drills (e.g., shutting down an entire region)
+* Test backup restore procedures
+* Validate RTO/RPO targets
+* Continuously audit recovery readiness
+
+Automated DR reduces human error and speeds up recovery.
+
+
+### **Challenges in Geo-Distributed Systems**
+
+Systems spanning multiple regions or continents face:
+
+* **High network latency**
+* **Data consistency issues**
+* **Split-brain scenarios**
+* **Complex replication logic**
+* **Different regulatory requirements**
+* **Higher operational cost**
+
+Achieving strong consistency across regions is hard due to network unpredictability.
+
+
+### **Geo-Redundancy & Quorum-Based Design**
+
+#### **Geo-Redundancy**
+
+Deploying services/data across multiple regions ensures:
+
+* Region-level fault tolerance
+* Availability during disasters
+* Faster local access for users
+
+Common patterns:
+
+* Active-active multi-region
+* Active-passive warm standby
+* Active-cold DR region
+
+#### **Quorum-Based Design**
+
+Used to maintain consistency in distributed systems:
+
+* A write succeeds only if a **majority (quorum)** of nodes acknowledge it.
+* Prevents split-brain and ensures durability.
+* Used by systems like Cassandra, MongoDB, Consul, Zookeeper.
+
+Quorums help balance:
+
+* **Consistency** (enough nodes must agree)
+* **Availability** (system stays online despite failures)
+
